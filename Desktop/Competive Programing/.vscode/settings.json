@@ -2,6 +2,7 @@
     "files.associations": {
         "*.py": "python",
         "iostream": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "div24": "cpp"
     }
 }
