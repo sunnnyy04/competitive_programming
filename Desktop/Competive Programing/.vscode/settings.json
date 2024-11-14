@@ -3,6 +3,7 @@
         "*.py": "python",
         "iostream": "cpp",
         "vector": "cpp",
-        "div24": "cpp"
+        "div24": "cpp",
+        "string": "cpp"
     }
 }
