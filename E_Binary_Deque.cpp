@@ -3,16 +3,16 @@ using namespace std;
 
 //--------------------------------------------------------------//
 typedef vector<int> vi;
-typedef vector<vector<int>> vvi;
+typedef vector<vector<int> > vvi;
 typedef vector<long long> vl;
-typedef vector<vector<long long>> vvl;
+typedef vector<vector<long long> > vvl;
 typedef vector<bool> vb;
 typedef vector<string> vs;
 typedef vector<char> vc;
 typedef unordered_map<int, int> umii;
 typedef priority_queue<int> maxh;
-typedef priority_queue<int, vi, greater<int>> minh;
-typedef vector<vector<bool>> vvb;
+typedef priority_queue<int, vi, greater<int> > minh;
+typedef vector<vector<bool> > vvb;
 typedef map<int, int> mii;
 typedef map<long long, long long> mll;
 typedef pair<int, int> pii;
@@ -58,36 +58,50 @@ int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
 void solve() {
-    ll n;
-    cin>>n;
+    ll n,s;
+    cin>>n>>s;
     vi a(n);
+    vi p(n);
+    ll ans =INT_MAX;
     loop(i,0,n){
         cin>>a[i];
+        p[i]=a[i];
+        if(i) p[i]+=p[i-1];
     }
-    vi b(n,1);
-    loop(i,1,n){
-        if(a[i]<a[i-1]){
-            b[i]=-1;
-        }
+    ll sum=accumulate(a.begin(),a.end(),0ll);
+    if(n<s || sum<s){
+        cout<<-1<<endl;
+        return;
     }
-    int ans=1;
-    int r=-1;
-    int temp=1;
-    for(int i=0;i<n;i++){
-        if(b[i]==-1){
-            temp=1;
-        }
-        else{
-            temp++;
-        }
-        if(ans<temp){
-            r=i+1;ans=temp;
-        }
+    else if(sum==s){
+        cout<<0<<endl;
     }
-    if(r==-1){
-        cout<<1<<" "<<ans<<endl;
+    else{
+        for(int i=0;i<n;i++){
+            int pos=-1;
+            int l=i;
+            int r=n-1;
+            int x=s+p[i]-a[i];
+            while(l<=r && l>=i){
+                int mid=(l+r)/2;
+                if(p[mid]==x){
+                    pos=mid;
+                    l=mid+1;
+                }
+                else if(p[mid]>x){
+                    r=mid-1;
+                }
+                else{
+                    l=mid+1;
+                }
+            }
+            if(pos==-1) break;
+            else {
+                ans=min(ans,i+n-pos-1);
+            }
+        }
+        cout<<ans<<endl;
     }
-    else cout<<r-ans+1<<" "<<r<<endl;
 
 }
 

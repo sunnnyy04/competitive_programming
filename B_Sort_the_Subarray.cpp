@@ -3,16 +3,16 @@ using namespace std;
 
 //--------------------------------------------------------------//
 typedef vector<int> vi;
-typedef vector<vector<int>> vvi;
+typedef vector<vector<int> > vvi;
 typedef vector<long long> vl;
-typedef vector<vector<long long>> vvl;
+typedef vector<vector<long long> > vvl;
 typedef vector<bool> vb;
 typedef vector<string> vs;
 typedef vector<char> vc;
 typedef unordered_map<int, int> umii;
 typedef priority_queue<int> maxh;
-typedef priority_queue<int, vi, greater<int>> minh;
-typedef vector<vector<bool>> vvb;
+typedef priority_queue<int, vi, greater<int> > minh;
+typedef vector<vector<bool> > vvb;
 typedef map<int, int> mii;
 typedef map<long long, long long> mll;
 typedef pair<int, int> pii;
@@ -64,30 +64,25 @@ void solve() {
     loop(i,0,n){
         cin>>a[i];
     }
-    vi b(n,1);
-    loop(i,1,n){
-        if(a[i]<a[i-1]){
-            b[i]=-1;
-        }
+    vi b(n);
+    loop(i,0,n){
+        cin>>b[i];
     }
-    int ans=1;
-    int r=-1;
-    int temp=1;
-    for(int i=0;i<n;i++){
-        if(b[i]==-1){
-            temp=1;
+    int ld=-1;
+        int rd=-1;
+        for(int i=0;i<n;i++){
+            if(a[i]!=b[i]){
+                rd=i;
+                if(ld==-1){ld=i;}
+            }
         }
-        else{
-            temp++;
+        while(ld>0 && b[ld-1]<=b[ld]){
+            ld--;
         }
-        if(ans<temp){
-            r=i+1;ans=temp;
+        while(rd<n-1 && b[rd+1]>=b[rd]){
+            rd++;
         }
-    }
-    if(r==-1){
-        cout<<1<<" "<<ans<<endl;
-    }
-    else cout<<r-ans+1<<" "<<r<<endl;
+        cout<<ld+1<<" "<<rd+1<<endl;
 
 }
 

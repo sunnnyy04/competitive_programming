@@ -3,16 +3,16 @@ using namespace std;
 
 //--------------------------------------------------------------//
 typedef vector<int> vi;
-typedef vector<vector<int>> vvi;
+typedef vector<vector<int> > vvi;
 typedef vector<long long> vl;
-typedef vector<vector<long long>> vvl;
+typedef vector<vector<long long> > vvl;
 typedef vector<bool> vb;
 typedef vector<string> vs;
 typedef vector<char> vc;
 typedef unordered_map<int, int> umii;
 typedef priority_queue<int> maxh;
-typedef priority_queue<int, vi, greater<int>> minh;
-typedef vector<vector<bool>> vvb;
+typedef priority_queue<int, vi, greater<int> > minh;
+typedef vector<vector<bool> > vvb;
 typedef map<int, int> mii;
 typedef map<long long, long long> mll;
 typedef pair<int, int> pii;
@@ -58,36 +58,28 @@ int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
 void solve() {
-    ll n;
+    int n;
     cin>>n;
     vi a(n);
     loop(i,0,n){
         cin>>a[i];
     }
-    vi b(n,1);
-    loop(i,1,n){
-        if(a[i]<a[i-1]){
-            b[i]=-1;
+    vector<int>pos(1001,-1);
+    loop(i,0,n){
+        pos[a[i]]=i;
+    }
+    int ans=-1;
+    for(int i=1;i<1001;i++){
+        for(int j=1;j<1001;j++){
+            if(pos[i]!=-1 && pos[j]!=-1){
+                if(gcd(i,j)==1){
+                    int temp=pos[i]+pos[j]+2;
+                    ans=max(temp,ans);
+                }
+            }
         }
     }
-    int ans=1;
-    int r=-1;
-    int temp=1;
-    for(int i=0;i<n;i++){
-        if(b[i]==-1){
-            temp=1;
-        }
-        else{
-            temp++;
-        }
-        if(ans<temp){
-            r=i+1;ans=temp;
-        }
-    }
-    if(r==-1){
-        cout<<1<<" "<<ans<<endl;
-    }
-    else cout<<r-ans+1<<" "<<r<<endl;
+    cout<<ans<<endl;
 
 }
 

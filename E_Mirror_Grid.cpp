@@ -3,16 +3,16 @@ using namespace std;
 
 //--------------------------------------------------------------//
 typedef vector<int> vi;
-typedef vector<vector<int>> vvi;
+typedef vector<vector<int> > vvi;
 typedef vector<long long> vl;
-typedef vector<vector<long long>> vvl;
+typedef vector<vector<long long> > vvl;
 typedef vector<bool> vb;
 typedef vector<string> vs;
 typedef vector<char> vc;
 typedef unordered_map<int, int> umii;
 typedef priority_queue<int> maxh;
-typedef priority_queue<int, vi, greater<int>> minh;
-typedef vector<vector<bool>> vvb;
+typedef priority_queue<int, vi, greater<int> > minh;
+typedef vector<vector<bool> > vvb;
 typedef map<int, int> mii;
 typedef map<long long, long long> mll;
 typedef pair<int, int> pii;
@@ -57,38 +57,35 @@ int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --
 /*---------------------------------------------------------------------------*/ 
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
+ll ans = 0;
+
+void func(ll row, ll col, ll n, vector<vector<char> >& a) {
+    ll o = 0, z = 0;
+    if(a[row][col] == '0') z++; else o++;
+    if(a[col][n-row] == '0') z++; else o++;
+    if(a[n-row][n-col] == '0') z++; else o++;
+    if(a[n-col][row] == '0') z++; else o++;
+    ans += min(o, z);
+}
+
 void solve() {
     ll n;
-    cin>>n;
-    vi a(n);
-    loop(i,0,n){
-        cin>>a[i];
-    }
-    vi b(n,1);
-    loop(i,1,n){
-        if(a[i]<a[i-1]){
-            b[i]=-1;
+    cin >> n;
+    ans = 0;
+    vector<vector<char> > a(n, vector<char>(n));
+    
+    loop(i, 0, n) {
+        loop(j, 0, n) {
+            cin >> a[i][j];
         }
     }
-    int ans=1;
-    int r=-1;
-    int temp=1;
-    for(int i=0;i<n;i++){
-        if(b[i]==-1){
-            temp=1;
-        }
-        else{
-            temp++;
-        }
-        if(ans<temp){
-            r=i+1;ans=temp;
+    for(ll i = 0; i < (n+1)/2; i++) {
+        for(ll j = 0; j < n/2; j++) {
+            func(i, j, n-1, a);
         }
     }
-    if(r==-1){
-        cout<<1<<" "<<ans<<endl;
-    }
-    else cout<<r-ans+1<<" "<<r<<endl;
 
+    cout << ans << nl;
 }
 
 int main() {

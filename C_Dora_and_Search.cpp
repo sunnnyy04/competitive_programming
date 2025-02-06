@@ -3,16 +3,16 @@ using namespace std;
 
 //--------------------------------------------------------------//
 typedef vector<int> vi;
-typedef vector<vector<int>> vvi;
+typedef vector<vector<int> > vvi;
 typedef vector<long long> vl;
-typedef vector<vector<long long>> vvl;
+typedef vector<vector<long long> > vvl;
 typedef vector<bool> vb;
 typedef vector<string> vs;
 typedef vector<char> vc;
 typedef unordered_map<int, int> umii;
 typedef priority_queue<int> maxh;
-typedef priority_queue<int, vi, greater<int>> minh;
-typedef vector<vector<bool>> vvb;
+typedef priority_queue<int, vi, greater<int> > minh;
+typedef vector<vector<bool> > vvb;
 typedef map<int, int> mii;
 typedef map<long long, long long> mll;
 typedef pair<int, int> pii;
@@ -58,37 +58,39 @@ int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
 void solve() {
-    ll n;
+    int n;
     cin>>n;
-    vi a(n);
+    vl a(n);
     loop(i,0,n){
         cin>>a[i];
     }
-    vi b(n,1);
-    loop(i,1,n){
-        if(a[i]<a[i-1]){
-            b[i]=-1;
+    int start=0;
+    int end=n-1;
+    ll f=1;
+    ll e=n;
+    while(start<end){
+        if(a[start] !=f && a[end]!=e && a[start]!=e && a[end]!=f){
+            cout<<start+1<<" "<<end+1<<endl;
+            return;
+        }
+        if(a[start]==f){
+            start++;
+            f++;
+        }
+        if(a[start]==e){
+            e--;
+            start++;
+        }
+        if(a[end]==f){
+            end--;
+            f++;
+        }
+        if(a[end]==e){
+            end--;
+            e--;
         }
     }
-    int ans=1;
-    int r=-1;
-    int temp=1;
-    for(int i=0;i<n;i++){
-        if(b[i]==-1){
-            temp=1;
-        }
-        else{
-            temp++;
-        }
-        if(ans<temp){
-            r=i+1;ans=temp;
-        }
-    }
-    if(r==-1){
-        cout<<1<<" "<<ans<<endl;
-    }
-    else cout<<r-ans+1<<" "<<r<<endl;
-
+    cout<<-1<<endl;
 }
 
 int main() {

@@ -3,16 +3,16 @@ using namespace std;
 
 //--------------------------------------------------------------//
 typedef vector<int> vi;
-typedef vector<vector<int>> vvi;
+typedef vector<vector<int> > vvi;
 typedef vector<long long> vl;
-typedef vector<vector<long long>> vvl;
+typedef vector<vector<long long> > vvl;
 typedef vector<bool> vb;
 typedef vector<string> vs;
 typedef vector<char> vc;
 typedef unordered_map<int, int> umii;
 typedef priority_queue<int> maxh;
-typedef priority_queue<int, vi, greater<int>> minh;
-typedef vector<vector<bool>> vvb;
+typedef priority_queue<int, vi, greater<int> > minh;
+typedef vector<vector<bool> > vvb;
 typedef map<int, int> mii;
 typedef map<long long, long long> mll;
 typedef pair<int, int> pii;
@@ -58,36 +58,59 @@ int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
 void solve() {
-    ll n;
-    cin>>n;
-    vi a(n);
+    ll n,q;
+    cin>>n>>q;
+    vl a(n);
     loop(i,0,n){
         cin>>a[i];
     }
-    vi b(n,1);
-    loop(i,1,n){
-        if(a[i]<a[i-1]){
-            b[i]=-1;
-        }
+    vl k(q);
+    map<ll,ll>ind;
+    loop(i,0,q){
+        cin>>k[i];
+        ind[i]=k[i];
     }
-    int ans=1;
-    int r=-1;
-    int temp=1;
-    for(int i=0;i<n;i++){
-        if(b[i]==-1){
-            temp=1;
+    sort(k.begin(),k.end());
+    map<ll,ll>result;
+    for(ll i=0;i<q;i++){
+        if(i==0){
+            result[k[i]]=-1;
+            for(ll j=0;j<n;j++){
+                if(k[i]>=a[j]){
+                    result[k[i]]=j;
+                    // cout<<j<<endl;
+                }
+                else{ 
+                    // cout<<j<<endl;
+                    break;
+                }
+            }
         }
         else{
-            temp++;
-        }
-        if(ans<temp){
-            r=i+1;ans=temp;
+            result[k[i]]=result[k[i-1]];
+            for(int j=result[k[i-1]]+1;j<n;j++){
+                if(a[j]<=k[i]){
+
+                    result[k[i]]=j;
+                }
+                else{ 
+                    // cout<<j<<endl;
+                    break;
+                }
+            }
         }
     }
-    if(r==-1){
-        cout<<1<<" "<<ans<<endl;
+    loop(i,1,n){
+        a[i]+=a[i-1];
     }
-    else cout<<r-ans+1<<" "<<r<<endl;
+    for(auto &i:ind){
+        // cout<<result[i.second]<<" ";
+        if(result[i.second]==-1){
+            cout<<0<<" ";
+        }
+        else cout<<a[result[i.second]]<<" ";
+    }
+    cout<<endl;
 
 }
 

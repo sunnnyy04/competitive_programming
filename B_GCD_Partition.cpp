@@ -3,16 +3,16 @@ using namespace std;
 
 //--------------------------------------------------------------//
 typedef vector<int> vi;
-typedef vector<vector<int>> vvi;
+typedef vector<vector<int> > vvi;
 typedef vector<long long> vl;
-typedef vector<vector<long long>> vvl;
+typedef vector<vector<long long> > vvl;
 typedef vector<bool> vb;
 typedef vector<string> vs;
 typedef vector<char> vc;
 typedef unordered_map<int, int> umii;
 typedef priority_queue<int> maxh;
-typedef priority_queue<int, vi, greater<int>> minh;
-typedef vector<vector<bool>> vvb;
+typedef priority_queue<int, vi, greater<int> > minh;
+typedef vector<vector<bool> > vvb;
 typedef map<int, int> mii;
 typedef map<long long, long long> mll;
 typedef pair<int, int> pii;
@@ -51,44 +51,30 @@ void printall(vi v) { for (auto ele : v) cout << ele << " "; }
 int modadd(int a, int b, int m) { a %= m; b %= m; return (a + b) % m; }
 int modmul(int a, int b, int m) { a %= m; b %= m; return (a * b) % m; }
 int modsub(int a, int b, int m) { a %= m; b %= m; return (a - b + m) % m; }
-int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
+ll gcd(ll a, ll b) { if (b == 0) return a; return gcd(b, a % b); }
 int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
 int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
 /*---------------------------------------------------------------------------*/ 
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
 void solve() {
-    ll n;
+    int n;
     cin>>n;
-    vi a(n);
+    vector<ll>a(n);
     loop(i,0,n){
         cin>>a[i];
     }
-    vi b(n,1);
-    loop(i,1,n){
-        if(a[i]<a[i-1]){
-            b[i]=-1;
-        }
+    ll sum1=accumulate(a.begin(),a.end(),0ll);
+    ll sum2=0;
+    ll temp;
+    ll ans=1;
+    for(int i=0;i<n-1;i++){
+        sum2+=a[i];
+        sum1-=a[i];
+        temp=gcd(sum1,sum2);
+        ans=max(temp,ans);
     }
-    int ans=1;
-    int r=-1;
-    int temp=1;
-    for(int i=0;i<n;i++){
-        if(b[i]==-1){
-            temp=1;
-        }
-        else{
-            temp++;
-        }
-        if(ans<temp){
-            r=i+1;ans=temp;
-        }
-    }
-    if(r==-1){
-        cout<<1<<" "<<ans<<endl;
-    }
-    else cout<<r-ans+1<<" "<<r<<endl;
-
+    cout<<ans<<endl;
 }
 
 int main() {

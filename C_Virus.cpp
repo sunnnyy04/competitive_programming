@@ -3,16 +3,16 @@ using namespace std;
 
 //--------------------------------------------------------------//
 typedef vector<int> vi;
-typedef vector<vector<int>> vvi;
+typedef vector<vector<int> > vvi;
 typedef vector<long long> vl;
-typedef vector<vector<long long>> vvl;
+typedef vector<vector<long long> > vvl;
 typedef vector<bool> vb;
 typedef vector<string> vs;
 typedef vector<char> vc;
 typedef unordered_map<int, int> umii;
 typedef priority_queue<int> maxh;
-typedef priority_queue<int, vi, greater<int>> minh;
-typedef vector<vector<bool>> vvb;
+typedef priority_queue<int, vi, greater<int> > minh;
+typedef vector<vector<bool> > vvb;
 typedef map<int, int> mii;
 typedef map<long long, long long> mll;
 typedef pair<int, int> pii;
@@ -58,37 +58,39 @@ int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
 void solve() {
-    ll n;
-    cin>>n;
-    vi a(n);
-    loop(i,0,n){
+    int n,m;
+    cin>>n>>m;
+    vl a(m);
+    loop(i,0,m){
         cin>>a[i];
     }
-    vi b(n,1);
-    loop(i,1,n){
-        if(a[i]<a[i-1]){
-            b[i]=-1;
+    if(m==1){
+        cout<<2<<endl;
+        return;
+    }
+    sort(a.begin(),a.end());
+    ll d=0;
+    vl ans;
+    ll x=a[0]-1;
+    x+=(n-a[m-1]);
+    ans.push_back(x);
+    for(int i=1;i<m;i++){
+        ans.push_back(a[i]-a[i-1]-1);
+    }
+    sort(ans.begin(),ans.end());
+    ll p=0;
+    for(int i=ans.size()-1;i>=0;i--){
+        ll z=ans[i]-2*d;
+        if(z<=2 && z>0){
+            p+=1;
+            d++;
+        }
+        else if(z>2){
+            d+=2;
+            p+=(z-1);
         }
     }
-    int ans=1;
-    int r=-1;
-    int temp=1;
-    for(int i=0;i<n;i++){
-        if(b[i]==-1){
-            temp=1;
-        }
-        else{
-            temp++;
-        }
-        if(ans<temp){
-            r=i+1;ans=temp;
-        }
-    }
-    if(r==-1){
-        cout<<1<<" "<<ans<<endl;
-    }
-    else cout<<r-ans+1<<" "<<r<<endl;
-
+    cout<<n-p<<endl;
 }
 
 int main() {

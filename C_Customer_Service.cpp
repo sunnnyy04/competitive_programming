@@ -3,16 +3,16 @@ using namespace std;
 
 //--------------------------------------------------------------//
 typedef vector<int> vi;
-typedef vector<vector<int>> vvi;
+typedef vector<vector<int> > vvi;
 typedef vector<long long> vl;
-typedef vector<vector<long long>> vvl;
+typedef vector<vector<long long> > vvl;
 typedef vector<bool> vb;
 typedef vector<string> vs;
 typedef vector<char> vc;
 typedef unordered_map<int, int> umii;
 typedef priority_queue<int> maxh;
-typedef priority_queue<int, vi, greater<int>> minh;
-typedef vector<vector<bool>> vvb;
+typedef priority_queue<int, vi, greater<int> > minh;
+typedef vector<vector<bool> > vvb;
 typedef map<int, int> mii;
 typedef map<long long, long long> mll;
 typedef pair<int, int> pii;
@@ -58,37 +58,35 @@ int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
 void solve() {
-    ll n;
+    int n;
     cin>>n;
-    vi a(n);
-    loop(i,0,n){
-        cin>>a[i];
-    }
-    vi b(n,1);
-    loop(i,1,n){
-        if(a[i]<a[i-1]){
-            b[i]=-1;
-        }
-    }
-    int ans=1;
-    int r=-1;
-    int temp=1;
+    vvl a(n,vl(n));
     for(int i=0;i<n;i++){
-        if(b[i]==-1){
-            temp=1;
-        }
-        else{
-            temp++;
-        }
-        if(ans<temp){
-            r=i+1;ans=temp;
+        for(int j=0;j<n;j++){
+            cin>>a[i][j];
         }
     }
-    if(r==-1){
-        cout<<1<<" "<<ans<<endl;
+    for(int i=0;i<n;i++){
+        for(int j=n-2;j>=0;j--){
+            a[j][i]+=a[j+1][i];
+        }
     }
-    else cout<<r-ans+1<<" "<<r<<endl;
-
+    ll ans=1;
+    ll x=1;
+    for(int i=n-1;i>=0;i--){
+        map<ll,ll>mpp;
+        for(int j=0;j<n;j++){
+            mpp[a[i][j]]++;
+        }
+        if(mpp.find(x)==mpp.end()){
+            cout<<ans<<endl;
+            return;
+        }
+        x++;
+        ans++;
+    }
+    cout<<ans<<endl;
+    
 }
 
 int main() {
