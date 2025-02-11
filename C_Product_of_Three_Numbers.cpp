@@ -54,27 +54,64 @@ int modsub(int a, int b, int m) { a %= m; b %= m; return (a - b + m) % m; }
 int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
 int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
 int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+queue<ll> pfactor(ll n) {
+    queue<ll>  ans;
+    while (n % 2 == 0) {
+        ans.push(2);
+        n /= 2;
+    }
+    for (ll i = 3; i * i <= n; i += 2) {
+        while (n % i == 0) {
+            ans.push(i);
+            n /= i;
+        }
+    }
+    if (n > 1) {
+        ans.push(n);
+    }
+    
+    return ans;
+}
+
 /*---------------------------------------------------------------------------*/ 
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
 void solve() {
     int n;
     cin>>n;
-    vl a(n+1);
-    loop(i,1,n+1){
-        cin>>a[i];
+    queue<ll>mpp=pfactor(n);
+    if(mpp.size()<3){
+        cout<<"NO"<<endl;
     }
-    ll ans=0;
-    for(int i=1;i<=n;i++){
-        for(int j=a;j<n+1;j+=a[i]){
-            if(j<=i) continue;
-            
-            if(i+j==(a[i]*a[j])){
-                ans++;
-            }
+    else{
+        ll a=mpp.front();
+        mpp.pop();
+        ll b=mpp.front();
+        mpp.pop();
+        if(a==b){
+            b*=mpp.front();
+            mpp.pop();
+        }
+        ll c=1;
+        while(mpp.size()!=0){
+            ll x=mpp.front();
+            c*=x;
+            mpp.pop();
+        }
+        if(b==c || a==c || c==1){
+            cout<<"NO"<<endl;
+        }
+        else{
+            cout<<"YES"<<endl;
+            cout<<a<<" "<<b<<" "<<c<<" "<<endl;
         }
     }
-    cout<<ans<<endl;
+
+
 }
 
 int main() {

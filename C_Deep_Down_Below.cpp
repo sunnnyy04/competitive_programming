@@ -54,27 +54,51 @@ int modsub(int a, int b, int m) { a %= m; b %= m; return (a - b + m) % m; }
 int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
 int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
 int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
+bool customSort(const std::pair<int, int>& a, const std::pair<int, int>& b) {
+    if (a.first != b.first) 
+        return a.first < b.first;
+    return a.second > b.second;    
+}
 /*---------------------------------------------------------------------------*/ 
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
 void solve() {
-    int n;
+    ll n;
     cin>>n;
-    vl a(n+1);
-    loop(i,1,n+1){
-        cin>>a[i];
-    }
-    ll ans=0;
-    for(int i=1;i<=n;i++){
-        for(int j=a;j<n+1;j+=a[i]){
-            if(j<=i) continue;
-            
-            if(i+j==(a[i]*a[j])){
-                ans++;
+    vector<pair<ll,ll>>p;
+    while(n--){
+        ll x;
+        cin>>x;
+        ll begin;
+        cin>>begin;
+        ll j=1;
+        begin+=1;
+        x--;
+        while(x--){
+            ll z;
+            cin>>z;
+            if(begin+j<=z){
+                begin=(z-j+1);
             }
+            j++;
+
+        }
+        p.push_back({begin,begin+j});
+    }
+    sort(p.begin(),p.end(),customSort);
+    ll begin=p[0].first;
+    ll end=p[0].second;
+    for(int i=1;i<p.size();i++){
+        if(end<p[i].first){
+            begin+=p[i].first-end;
+            end=p[i].second;
+        }
+        else{
+            end+=(p[i].second-p[i].first);
         }
     }
-    cout<<ans<<endl;
+    cout<<begin<<endl;
+
 }
 
 int main() {

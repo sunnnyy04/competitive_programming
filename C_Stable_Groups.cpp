@@ -58,33 +58,54 @@ int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
 void solve() {
-    int n;
-    cin>>n;
-    vl a(n+1);
-    loop(i,1,n+1){
-        cin>>a[i];
+    ll n,k,c;
+    cin>>n>>k>>c;
+    vl a(n);
+    for(auto &i:a){
+        cin>>i;
     }
-    ll ans=0;
-    for(int i=1;i<=n;i++){
-        for(int j=a;j<n+1;j+=a[i]){
-            if(j<=i) continue;
-            
-            if(i+j==(a[i]*a[j])){
-                ans++;
+    sort(all(a));
+    map<ll,ll>mpp;
+    loop(i,1,n){
+        ll z=a[i]-a[i-1];
+        // cout<<z<<endl;
+        if(z>c){
+            if(z%c==0){
+            mpp[(z/c)-1]++;
+            // cout<<mpp[(z/c)-1]<<endl;
+        }
+        else{
+            mpp[z/c]++;
+            // cout<<mpp[z/c]<<endl;
+        }}
+        // cout<<mpp[z/c]<<endl;
+    }
+    for(auto &i:mpp){
+        if(k>0){
+            if(k>=(i.second*i.first)){
+                k-=(i.second*i.first);
+                i.second=0;
+            }
+            else{
+                i.second-=(k/i.first);
+                k=0;
             }
         }
+        else{
+            break;
+        }
     }
-    cout<<ans<<endl;
+    ll ans=0;
+    for(auto &i:mpp){
+        // cout<<i.second<<endl;
+        ans+=i.second;
+    }
+    cout<<ans+1<<endl;
 }
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-
-    int tc;
-    cin >> tc;
-    while (tc--) {
         solve();
-    }
     return 0;
 }

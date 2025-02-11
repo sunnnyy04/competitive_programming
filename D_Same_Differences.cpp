@@ -60,18 +60,18 @@ int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --
 void solve() {
     int n;
     cin>>n;
-    vl a(n+1);
-    loop(i,1,n+1){
+    vl a(n);
+    loop(i,0,n){
         cin>>a[i];
     }
+    map<ll,ll>mpp;
+    for(int i=0;i<n;i++){
+        mpp[a[i]-i-1]++;
+    }
     ll ans=0;
-    for(int i=1;i<=n;i++){
-        for(int j=a;j<n+1;j+=a[i]){
-            if(j<=i) continue;
-            
-            if(i+j==(a[i]*a[j])){
-                ans++;
-            }
+    for(auto i:mpp){
+        if(i.second>1){
+            ans+=((i.second*(i.second-1))/2);
         }
     }
     cout<<ans<<endl;

@@ -58,23 +58,32 @@ int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
 void solve() {
-    int n;
-    cin>>n;
-    vl a(n+1);
-    loop(i,1,n+1){
-        cin>>a[i];
-    }
-    ll ans=0;
-    for(int i=1;i<=n;i++){
-        for(int j=a;j<n+1;j+=a[i]){
-            if(j<=i) continue;
-            
-            if(i+j==(a[i]*a[j])){
-                ans++;
-            }
+    int n,w;
+    cin>>n>>w;
+    vl a(n);
+    multiset<ll>st;
+    loop(i,0,n){
+        ll x;
+        cin>>x;
+        st.insert(x);
+    } 
+    ll h=1;
+    ll l=w;
+    while(!st.empty()){
+        auto ind=st.upper_bound(l) ;
+        if(ind!=st.begin()){
+            ind--;
+            int x=*ind;
+            l-=x;
+            st.erase(ind);
+        }
+        else{
+            h++;
+            l=w;
         }
     }
-    cout<<ans<<endl;
+    cout<<h<<endl;
+
 }
 
 int main() {

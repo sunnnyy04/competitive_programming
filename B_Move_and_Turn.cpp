@@ -60,31 +60,17 @@ int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --
 void solve() {
     int n;
     cin>>n;
-    vl a(n+1);
-    loop(i,1,n+1){
-        cin>>a[i];
+    if(n%2==0){
+        cout<<pow(n/2+1,2)<<endl;
     }
-    ll ans=0;
-    for(int i=1;i<=n;i++){
-        for(int j=a;j<n+1;j+=a[i]){
-            if(j<=i) continue;
-            
-            if(i+j==(a[i]*a[j])){
-                ans++;
-            }
-        }
+    else{
+        cout<<2*((n/2)+1)*((n/2)+2)<<endl;
     }
-    cout<<ans<<endl;
 }
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-
-    int tc;
-    cin >> tc;
-    while (tc--) {
         solve();
-    }
     return 0;
 }

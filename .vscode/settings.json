@@ -6,6 +6,7 @@
         "div24": "cpp",
         "string": "cpp",
         "ostream": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "queue": "cpp"
     }
 }

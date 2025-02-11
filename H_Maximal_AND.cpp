@@ -58,24 +58,58 @@ int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
 void solve() {
-    int n;
-    cin>>n;
-    vl a(n+1);
-    loop(i,1,n+1){
-        cin>>a[i];
+    int n, k;
+    cin >> n >> k;
+    vl a(n);
+    
+    loop(i, 0, n) {
+        cin >> a[i];
     }
-    ll ans=0;
-    for(int i=1;i<=n;i++){
-        for(int j=a;j<n+1;j+=a[i]){
-            if(j<=i) continue;
-            
-            if(i+j==(a[i]*a[j])){
-                ans++;
+
+    ll set = -1;  // Set to -1 initially to check later
+    stack<pair<ll, ll>> st;
+
+    for (int i = 0; i < 31; i++) {
+        ll z = (1LL << i);
+        ll b = 0;
+
+        for (int j = 0; j < n; j++) {
+            if ((a[j] & z) == 0) {
+                b++;
             }
         }
+
+        if (b <= k) {
+            st.push({b, i});
+            set = i;
+        }
     }
-    cout<<ans<<endl;
+
+    ll ans = a[0];
+    for (int i = 1; i < n; i++) {
+        ans &= a[i];
+    }
+
+    if (set != -1) { 
+        ans |= (1LL << set);
+    }
+
+    // if (!st.empty()) {
+    //     k -= st.top().first;
+    //     st.pop();
+    // }
+
+    while (!st.empty() && k > 0) {
+        if (!st.empty() && st.top().first <= k) {
+            k -= st.top().first;
+            ans |= (1LL << st.top().second);
+        }
+        if (!st.empty()) st.pop();
+    }
+
+    cout << ans << endl;
 }
+
 
 int main() {
     ios_base::sync_with_stdio(false);

@@ -37,6 +37,8 @@ typedef long double ld;
 #define all(a)              a.begin(), a.end()
 #define sz(x)               ((int)(x).size())
 
+
+
 //--------------------------------------------------------------//
 const long long MOD = 1000000007;
 const int MAX_N = 500001;
@@ -53,29 +55,90 @@ int modmul(int a, int b, int m) { a %= m; b %= m; return (a * b) % m; }
 int modsub(int a, int b, int m) { a %= m; b %= m; return (a - b + m) % m; }
 int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
 int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
-int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
+
+vector<int> findFactors(int n) {
+    vector<int> factors;
+    for (int i = 1; i * i <= n; i++) {
+        if (n % i == 0) {
+            factors.push_back(i);
+            if (i != n / i) 
+                factors.push_back(n / i);
+        }
+    }
+    return factors;
+}int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
 /*---------------------------------------------------------------------------*/ 
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
 void solve() {
-    int n;
+    ll n;
     cin>>n;
-    vl a(n+1);
-    loop(i,1,n+1){
+    vl a(n);
+    loop(i,0,n){
         cin>>a[i];
     }
-    ll ans=0;
-    for(int i=1;i<=n;i++){
-        for(int j=a;j<n+1;j+=a[i]){
-            if(j<=i) continue;
-            
-            if(i+j==(a[i]*a[j])){
-                ans++;
+    
+    map<ll,ll>mpp;
+    for(int i=0;i<n;i++){
+        ll z=0;
+        while(1ll<<z <= a[i]){ 
+            if(a[i] & (1ll<<z)){
+                mpp[z]++;
             }
+            z++;
+            if(z > 63) break;
         }
     }
-    cout<<ans<<endl;
+    
+    vl v;
+    for(auto i:mpp){
+       v.push_back(i.second);   
+    //    cout<<i.second<<" "; 
+    }
+    // cout<<endl;
+    
+    if(v.empty()) {
+        for(int i=1;i<=n;i++){
+            cout<<i<<" ";
+        }
+        cout<<endl;
+    }
+    else if(v.size()==1){
+        vl fac;
+        for (int i = 1; i * i <= v[0]; i++) {
+        if (v[0] % i == 0) {
+            fac.push_back(i);
+            if (i != v[0] / i) 
+                fac.push_back(v[0]/i);
+            }
+        }
+        sort(all(fac));
+        for(int i=0;i<fac.size();i++){
+            cout<<fac[i]<<" ";
+        }
+        cout<<endl;
+    }
+    else{
+        ll ans=v[0];  
+        for(int i=1;i<v.size();i++){ 
+            ans=gcd(ans,v[i]);
+        }
+        vl fac;
+        for (int i = 1; i * i <= ans; i++) {
+        if (ans % i == 0) {
+            fac.push_back(i);
+            if (i != ans / i) 
+                fac.push_back(ans/i);
+            }
+        }
+        sort(all(fac));
+        for(int i=0;i<fac.size();i++){
+            cout<<fac[i]<<" ";
+        }
+        cout<<endl;
+    }
 }
+
 
 int main() {
     ios_base::sync_with_stdio(false);

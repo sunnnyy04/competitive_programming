@@ -54,27 +54,44 @@ int modsub(int a, int b, int m) { a %= m; b %= m; return (a - b + m) % m; }
 int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
 int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
 int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
+vl factor(ll n){
+    vector<ll>ans;
+    for(ll i=1;i<=sqrt(n);i++){
+        if(n%i==0){
+            ans.push_back(i);
+            if(i!=n/i) ans.push_back(n/i);
+        }
+    }
+    return ans;
+}
 /*---------------------------------------------------------------------------*/ 
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
 void solve() {
-    int n;
+    ll n;
     cin>>n;
-    vl a(n+1);
-    loop(i,1,n+1){
-        cin>>a[i];
+    ll k;
+    cin>>k;
+    
+    if(k>=n){
+        cout<<1<<endl;
+        return;
     }
-    ll ans=0;
-    for(int i=1;i<=n;i++){
-        for(int j=a;j<n+1;j+=a[i]){
-            if(j<=i) continue;
-            
-            if(i+j==(a[i]*a[j])){
-                ans++;
+    else{
+        vl ans=factor(n);
+        sort(all(ans),greater<ll>());
+        for(auto i: ans){
+            // cout<<i<<" ";
+            if(i<=k){
+                cout<<n/i<<endl;
+                return;
             }
         }
+        cout<<endl;
+
     }
-    cout<<ans<<endl;
+    
+
 }
 
 int main() {

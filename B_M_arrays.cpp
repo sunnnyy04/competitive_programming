@@ -57,25 +57,27 @@ int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --
 /*---------------------------------------------------------------------------*/ 
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
-void solve() {
-    int n;
-    cin>>n;
-    vl a(n+1);
-    loop(i,1,n+1){
-        cin>>a[i];
-    }
-    ll ans=0;
-    for(int i=1;i<=n;i++){
-        for(int j=a;j<n+1;j+=a[i]){
-            if(j<=i) continue;
-            
-            if(i+j==(a[i]*a[j])){
+void solve()  {
+        int n, m;
+        cin >> n >> m;
+        map<int, int> cnt;
+        while (n--) {
+            int x;
+            cin >> x;
+            cnt[x % m]++;
+        }
+        int ans = 0;
+        for (auto &c : cnt) {
+            if (c.first == 0) ans++;
+            else if (2 * c.first == m) {
                 ans++;
+            } else if (2 * c.first < m || cnt.find(m - c.first) == cnt.end()) {
+                int x = c.second, y = cnt[m - c.first];
+                ans += 1 + max(0, abs(x - y) - 1);
             }
         }
+        cout << ans << '\n';
     }
-    cout<<ans<<endl;
-}
 
 int main() {
     ios_base::sync_with_stdio(false);

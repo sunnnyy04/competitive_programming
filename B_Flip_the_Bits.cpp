@@ -60,21 +60,58 @@ int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --
 void solve() {
     int n;
     cin>>n;
-    vl a(n+1);
-    loop(i,1,n+1){
-        cin>>a[i];
-    }
-    ll ans=0;
-    for(int i=1;i<=n;i++){
-        for(int j=a;j<n+1;j+=a[i]){
-            if(j<=i) continue;
-            
-            if(i+j==(a[i]*a[j])){
-                ans++;
-            }
+    string a,b;
+    cin>>a>>b;
+    ll z=0,o=0;
+    loop(i,0,n){
+        if(a[i]=='0'){
+            z++;
+        }
+        else{
+            o++;
         }
     }
-    cout<<ans<<endl;
+    ll op=0;
+    for(int i=n-1;i>=0;i--){
+        if(a[i]==b[i]){
+            if(op%2==0){    
+            }
+            else{
+                if(z==o){
+                    op++;
+                    swap(z,o);
+                }
+                else{
+                    cout<<"NO"<<endl;
+                    return;
+                }
+            }
+        }
+        else{
+            if(op%2!=0){
+            }
+            else{
+                if(z==o){
+                    op++;
+                    swap(z,o);
+                }
+                else{
+                    cout<<"NO"<<endl;
+                    return;
+                }
+
+            }
+        }
+        if(op%2==0){
+            if(a[i]=='0') z--;
+            else o--;
+        }
+        else{
+            if(a[i]=='0') o--;
+            else z--;
+        }
+    }
+    cout<<"YES"<<endl;
 }
 
 int main() {

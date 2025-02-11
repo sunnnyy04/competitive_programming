@@ -60,21 +60,26 @@ int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --
 void solve() {
     int n;
     cin>>n;
-    vl a(n+1);
-    loop(i,1,n+1){
-        cin>>a[i];
+    if(n%2==0){
+        cout<<n/2<<" "<<n/2<<endl;
     }
-    ll ans=0;
-    for(int i=1;i<=n;i++){
-        for(int j=a;j<n+1;j+=a[i]){
-            if(j<=i) continue;
-            
-            if(i+j==(a[i]*a[j])){
-                ans++;
+    else{
+        ll lc=INT_MAX;
+        ll l=-1;
+
+        for(int i=2;i<=sqrt(n);i++){
+            if(n%i==0){
+                ll m=max(i,n/i);
+                l=max(l,m);
             }
         }
+        if(l!=-1){
+            cout<<l<<" "<<n-l<<endl;
+        }
+        else{
+            cout<<1<<" "<<n-1<<endl;
+        }
     }
-    cout<<ans<<endl;
 }
 
 int main() {
