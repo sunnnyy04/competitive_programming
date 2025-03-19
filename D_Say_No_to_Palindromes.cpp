@@ -54,67 +54,57 @@ int modsub(int a, int b, int m) { a %= m; b %= m; return (a - b + m) % m; }
 int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
 int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
 int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
-ll zero(int n) {
-    int count = 0;
-    while (n % 10 == 0 && n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
-int countDigits(long long n) {
-    int count = 0;
-    while (n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
 /*---------------------------------------------------------------------------*/ 
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
-void solve() {
-    int n,m;
-    cin>>n>>m;
-    vl a(n);
-    vl ze;
-    loop(i,0,n){
-        cin>>a[i];
-    }
-    loop(i,0,n){
-        ll z=zero(a[i]);
-        if(a[i]>0){
-            ze.push_back(z);
-        }
-    }
-    sort(all(ze));
-    ll ans=0;
-    for(int i=0;i<n;i++){
-        ans+=countDigits(a[i]);
-    }
-    for(ll i=n-1;i>=0;i-=2){
-        ans-=ze[i];
-    }
-    if(ans>m){
-        cout<<"Sasha"<<endl;
-    }
-    else{
-        cout<<"Anna"<<endl;
-    }
-
-
+void solve() 
+{
+	ll n, m;
+	cin >> n >> m;
+ 
+	string s;
+	cin >> s;
+ 
+	vector<vector<ll>> dp(6, vector<ll> (n, 0));
+	vector<vector<char>> poss;
+	poss.push_back({'a', 'b', 'c'});
+	poss.push_back({'b', 'a', 'c'});
+	poss.push_back({'c', 'a', 'b'});
+	poss.push_back({'a', 'c', 'b'});
+	poss.push_back({'b', 'c', 'a'});
+	poss.push_back({'c', 'b', 'a'});
+ 
+	for(ll i = 0; i < 6; i++) {
+		ll curr = 0;
+		for(ll j = 0; j < n; j++) {
+			if(poss[i][j % 3] != s[j]) curr++;
+			dp[i][j] = curr;
+		}
+	}
+ 
+	for(ll i = 0; i < m; i++) {
+		ll l, r;
+		cin >> l >> r;
+ 
+		--l;
+		--r;
+ 
+		ll ans = INT_MAX;
+		for(ll j = 0; j < 6; j++) {
+			ll curr = dp[j][r];
+			if(l != 0) curr -= dp[j][l - 1];
+			ans = min(ans, curr);
+		}
+ 
+		cout << ans << endl;
+	}
+ 
 }
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
-    int tc;
-    cin >> tc;
-    while (tc--) {
         solve();
-    }
     return 0;
 }

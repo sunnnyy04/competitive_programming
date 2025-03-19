@@ -54,67 +54,40 @@ int modsub(int a, int b, int m) { a %= m; b %= m; return (a - b + m) % m; }
 int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
 int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
 int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
-ll zero(int n) {
-    int count = 0;
-    while (n % 10 == 0 && n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
-int countDigits(long long n) {
-    int count = 0;
-    while (n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
 /*---------------------------------------------------------------------------*/ 
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
 void solve() {
-    int n,m;
-    cin>>n>>m;
+    ll n;
+    cin>>n;
     vl a(n);
-    vl ze;
-    loop(i,0,n){
-        cin>>a[i];
-    }
-    loop(i,0,n){
-        ll z=zero(a[i]);
-        if(a[i]>0){
-            ze.push_back(z);
-        }
-    }
-    sort(all(ze));
+    loop(i,0,n) cin>>a[i];
+    vl p(n);
+    ll cnt1=0,cnt2=0,bal=0;
     ll ans=0;
     for(int i=0;i<n;i++){
-        ans+=countDigits(a[i]);
-    }
-    for(ll i=n-1;i>=0;i-=2){
-        ans-=ze[i];
-    }
-    if(ans>m){
-        cout<<"Sasha"<<endl;
-    }
-    else{
-        cout<<"Anna"<<endl;
-    }
+        if(bal%2==0){
+            cnt1++;
+        }
+        else cnt2++;
+        if(a[i]<0){
+            bal++;
+        }
+        if(bal%2==0){
+            ans+=cnt1;
 
-
+        }
+        else ans+=cnt2;
+        // cout<<ans<<" "<<" ";
+    }
+    cout<<endl;
+    cout<<(n*(n+1)/2)-ans<<" "<<ans<<endl;
 }
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
-    int tc;
-    cin >> tc;
-    while (tc--) {
         solve();
-    }
-    return 0;
+    
 }

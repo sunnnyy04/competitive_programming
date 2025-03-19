@@ -36,12 +36,13 @@ typedef long double ld;
 #define loopr(i, a, b)      for (int i = b; i < a; i--)
 #define all(a)              a.begin(), a.end()
 #define sz(x)               ((int)(x).size())
-
+#define int long long 
 //--------------------------------------------------------------//
 const long long MOD = 1000000007;
 const int MAX_N = 500001;
 const double PI = 3.14159265358979;
 const double INF = 1e15;
+
 
 /*---------------------------------------------------------------------------*/ 
 bool revsort(ll a, ll b) { return (a > b); }
@@ -54,60 +55,63 @@ int modsub(int a, int b, int m) { a %= m; b %= m; return (a - b + m) % m; }
 int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
 int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
 int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
-ll zero(int n) {
-    int count = 0;
-    while (n % 10 == 0 && n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
-int countDigits(long long n) {
-    int count = 0;
-    while (n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
 /*---------------------------------------------------------------------------*/ 
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
+
 void solve() {
-    int n,m;
-    cin>>n>>m;
-    vl a(n);
-    vl ze;
-    loop(i,0,n){
-        cin>>a[i];
-    }
-    loop(i,0,n){
-        ll z=zero(a[i]);
-        if(a[i]>0){
-            ze.push_back(z);
+    ll n, k;
+    cin >> n >> k;
+    string a, b;
+    cin >> a >> b;
+    map<char, vector<int>> mpp;
+    for (int i = 0; i < n; i++) {
+        if (a[i] != b[i]) {
+            mpp[a[i]].push_back(i);
         }
     }
-    sort(all(ze));
+    vector<char> unique_chars;
+    for (auto &[ch, _] : mpp) {
+        unique_chars.push_back(ch);
+    }
+    k = min(k, (ll)unique_chars.size());
+    vector<bool> select(unique_chars.size(), false);
+    fill(select.begin(), select.begin() + k, true);
     ll ans=0;
-    for(int i=0;i<n;i++){
-        ans+=countDigits(a[i]);
-    }
-    for(ll i=n-1;i>=0;i-=2){
-        ans-=ze[i];
-    }
-    if(ans>m){
-        cout<<"Sasha"<<endl;
-    }
-    else{
-        cout<<"Anna"<<endl;
-    }
+    do {
+        set<char>s;
+        for (size_t i = 0; i < unique_chars.size(); ++i) {
+            if (select[i]){
+                s.insert( unique_chars[i]);
+            }
+        }
+        ll temp=0;
+        int j=0;
+        for(int i=0;i<n;i++){
+            if(a[i]==b[i]){
+                j++;
+            }
+            else if(s.find(a[i])!=s.end()){
+                j++;
+            }
+            else{
+                if(j==0){
 
+                }
+                else if(j==1) temp++;
+                else temp+=(j*(j+1)/2);
+                j=0;
+            }
+        }
+        if(j==1) temp++;
+        else temp+=(j*(j+1)/2);
+        ans=max(ans,temp);
+    } while (prev_permutation(select.begin(), select.end()));
 
+    cout<<ans<<endl;
 }
 
-int main() {
+signed main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 

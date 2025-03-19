@@ -39,77 +39,71 @@ typedef long double ld;
 
 //--------------------------------------------------------------//
 const long long MOD = 1000000007;
-const int MAX_N = 500001;
+const int MAX_N = 1001; // Adjusted to a reasonable size
 const double PI = 3.14159265358979;
 const double INF = 1e15;
 
 /*---------------------------------------------------------------------------*/ 
-bool revsort(ll a, ll b) { return (a > b); }
-void reverseStr(string &str) { int n = str.length(); for (int i = 0; i < n / 2; i++) { swap(str[i], str[n - i - 1]); } }
-bool ispal(string x) { int n = x.size(); for (int i = 0; i < n / 2; i++) { if (x[i] != x[n - i - 1]) return 0; } return 1; }
-void printall(vi v) { for (auto ele : v) cout << ele << " "; }
-int modadd(int a, int b, int m) { a %= m; b %= m; return (a + b) % m; }
-int modmul(int a, int b, int m) { a %= m; b %= m; return (a * b) % m; }
-int modsub(int a, int b, int m) { a %= m; b %= m; return (a - b + m) % m; }
-int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
-int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
-int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
-ll zero(int n) {
-    int count = 0;
-    while (n % 10 == 0 && n != 0) {
-        count++;
-        n /= 10;
+vector<ll> fact(MAX_N, 1), invFact(MAX_N, 1);
+
+// Function to calculate (a^b) % mod using Binary Exponentiation
+ll power(ll a, ll b, ll mod) {
+    ll res = 1;
+    while (b > 0) {
+        if (b & 1) res = (res * a) % mod;
+        a = (a * a) % mod;
+        b >>= 1;
     }
-    return count;
+    return res;
 }
 
-int countDigits(long long n) {
-    int count = 0;
-    while (n != 0) {
-        count++;
-        n /= 10;
+// Precompute factorials and inverse factorials
+void precompute() {
+    for (ll i = 2; i < MAX_N; i++) {
+        fact[i] = (fact[i - 1] * i) % MOD;
     }
-    return count;
+    invFact[MAX_N - 1] = power(fact[MAX_N - 1], MOD - 2, MOD);
+    for (ll i = MAX_N - 2; i >= 1; i--) {
+        invFact[i] = (invFact[i + 1] * (i + 1)) % MOD;
+    }
 }
 
-/*---------------------------------------------------------------------------*/ 
+// Function to calculate nCr % MOD
+ll nCr(ll n, ll r) {
+    if (r > n || r < 0) return 0;
+    return ((fact[n] * invFact[r]) % MOD * invFact[n - r]) % MOD;
+}
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
 void solve() {
-    int n,m;
-    cin>>n>>m;
+    ll n, k;
+    cin >> n >> k;
     vl a(n);
-    vl ze;
-    loop(i,0,n){
-        cin>>a[i];
-    }
-    loop(i,0,n){
-        ll z=zero(a[i]);
-        if(a[i]>0){
-            ze.push_back(z);
+    loop(i, 0, n) cin >> a[i];
+    sort(all(a));
+
+    ll x = 0;
+    for (int i = n - k; i < n; i++) {
+        if (a[i] == a[n - k]) {
+            x++;
+        } else {
+            break;
         }
     }
-    sort(all(ze));
-    ll ans=0;
-    for(int i=0;i<n;i++){
-        ans+=countDigits(a[i]);
-    }
-    for(ll i=n-1;i>=0;i-=2){
-        ans-=ze[i];
-    }
-    if(ans>m){
-        cout<<"Sasha"<<endl;
-    }
-    else{
-        cout<<"Anna"<<endl;
-    }
 
-
+    mll mpp;  // Changed from map<int, int> to map<ll, ll>
+    loop(i, 0, n) {
+        mpp[a[i]]++;
+    }
+    
+    cout << nCr(mpp[a[n - k]], x) << endl;
 }
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
+
+    precompute();  // ✅ Precompute factorials before solving test cases
 
     int tc;
     cin >> tc;

@@ -54,57 +54,66 @@ int modsub(int a, int b, int m) { a %= m; b %= m; return (a - b + m) % m; }
 int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
 int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
 int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
-ll zero(int n) {
-    int count = 0;
-    while (n % 10 == 0 && n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
-int countDigits(long long n) {
-    int count = 0;
-    while (n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
 /*---------------------------------------------------------------------------*/ 
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
 void solve() {
-    int n,m;
-    cin>>n>>m;
-    vl a(n);
-    vl ze;
-    loop(i,0,n){
-        cin>>a[i];
+    ll n,l,r;
+    cin>>n>>l>>r;
+    vl a(n+1);
+    loop(i,1,n+1) cin>>a[i];
+    vl pxo(n+1);
+    pxo[1] = a[1];
+    for (int i = 2; i <= n; i++) {
+        pxo[i] = pxo[i - 1] ^ a[i];
     }
-    loop(i,0,n){
-        ll z=zero(a[i]);
-        if(a[i]>0){
-            ze.push_back(z);
+
+    if(l<=n){
+        cout<<a[l]<<endl;
+        return;
+    }
+        ll z=l/2ll;
+        if(z<=n){
+            cout<<pxo[z]<<endl;
         }
-    }
-    sort(all(ze));
-    ll ans=0;
-    for(int i=0;i<n;i++){
-        ans+=countDigits(a[i]);
-    }
-    for(ll i=n-1;i>=0;i-=2){
-        ans-=ze[i];
-    }
-    if(ans>m){
-        cout<<"Sasha"<<endl;
-    }
-    else{
-        cout<<"Anna"<<endl;
-    }
-
-
+        else if(z%2!=0){
+            if(n%2==0){
+                cout<<(pxo[n]^pxo[n/2])<<endl;
+            }
+            else{
+                cout<<pxo[n]<<endl;
+            }
+            
+        }
+        else{
+            int cnt=0;
+            while(z%2==0 && z>n){
+                z/=2;
+                cnt++;
+            }
+            if(z<=n){
+                if(n%2==0){
+                    if(cnt%2!=0) cout<<(pxo[n]^pxo[n/2]^pxo[z])<<endl;
+                    else cout<<(pxo[z])<<endl;
+                }
+                else{
+                    if(cnt%2!=0) cout<<(pxo[n]^pxo[z])<<endl;
+                    else cout<<(pxo[z])<<endl;   
+                }
+            }
+            else if(n%2==0){
+                cnt++;
+                if(cnt%2!=0) cout<<(pxo[n]^pxo[n/2])<<endl;
+                else cout<<0<<endl;
+            }
+            else{
+                cnt++;
+                if(cnt%2!=0) cout<<pxo[n]<<endl;
+                else cout<<0<<endl;   
+            }
+        }
+    
+   
 }
 
 int main() {

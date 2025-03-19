@@ -19,6 +19,7 @@ typedef pair<int, int> pii;
 typedef pair<long long, long long> pll;
 typedef unsigned long long ull;
 typedef long double ld;
+#define int long long
 
 #define ll long long
 #define amax(a, b)          a = max(a, b)
@@ -54,60 +55,111 @@ int modsub(int a, int b, int m) { a %= m; b %= m; return (a - b + m) % m; }
 int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
 int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
 int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
-ll zero(int n) {
-    int count = 0;
-    while (n % 10 == 0 && n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
-int countDigits(long long n) {
-    int count = 0;
-    while (n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
 /*---------------------------------------------------------------------------*/ 
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
-void solve() {
-    int n,m;
-    cin>>n>>m;
-    vl a(n);
-    vl ze;
-    loop(i,0,n){
-        cin>>a[i];
+ll ans;
+ll xans;
+ll yans;
+ll n;
+vl a;
+void solve2(ll i,ll j){
+    if(i>j) return ;
+    ll x=i;
+    ll neg=0;
+    ll cnt2=0;
+    while(i<=j){
+        if(a[i]<0){
+            neg++;
+        }
+        if(a[i]==2 || a[i]==-2){
+            cnt2++;
+        }
+        i++;
     }
-    loop(i,0,n){
-        ll z=zero(a[i]);
-        if(a[i]>0){
-            ze.push_back(z);
+    i=x;
+    if(neg%2==0){
+        if(cnt2>ans){
+            xans=x;
+            yans=j;
+            ans=cnt2;
         }
     }
-    sort(all(ze));
-    ll ans=0;
-    for(int i=0;i<n;i++){
-        ans+=countDigits(a[i]);
-    }
-    for(ll i=n-1;i>=0;i-=2){
-        ans-=ze[i];
-    }
-    if(ans>m){
-        cout<<"Sasha"<<endl;
-    }
     else{
-        cout<<"Anna"<<endl;
+        ll tcnt2=cnt2;
+        while(i<j && a[i]>0){
+            if(a[i]==2 || a[i]==-2){
+                tcnt2--;
+            }
+            i++;
+        }
+        if(i<j){
+            if(a[i]==2 || a[i]==-2){
+                tcnt2--;
+            }
+            i++;
+            if(ans<tcnt2){
+                xans=i;
+                yans=j;
+                ans=tcnt2;
+            }
+        }
+        i=x;
+        tcnt2=cnt2;
+        while(j>i && a[j]>0){
+            if(a[j]==2 || a[j]==-2){
+                tcnt2--;
+            }
+            j--;
+        }
+        if(j>i && a[j]<0){
+            if(a[j]==2 || a[j]==-2){
+                tcnt2--;
+            }
+            j--;
+            if(ans<tcnt2){
+                xans=i;
+                yans=j;
+                ans=tcnt2;
+        }
+        }
+        
     }
-
-
 }
 
-int main() {
+void solve() {
+    ans=0;
+    xans=0;
+    yans=-1;
+    cin>>n;
+    a.clear();
+    a.assign(n,0);
+    loop(i,0,n) cin>>a[i];
+    if(n==1){
+        if(a[0]>=1)cout<<0<<" "<<0<<endl;
+        else{
+            cout<<0<<" "<<n<<endl;
+        }
+        return ;
+    }
+    ll j=0;
+    for(ll i=0;i<n;i++){
+        if(a[i]==0){
+            if(j<=i) solve2(j,i-1);
+            j=i+1;
+        }
+    }
+    if(j<=n-1){
+        solve2(j,n-1);
+    }
+    if(xans==0 && yans==-1){
+        cout<<0<<" "<<n<<endl;
+        return;
+    }
+    cout<<xans<<" "<<n-yans-1<<endl;
+}
+
+signed main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 

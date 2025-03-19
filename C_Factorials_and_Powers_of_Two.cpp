@@ -41,7 +41,8 @@ typedef long double ld;
 const long long MOD = 1000000007;
 const int MAX_N = 500001;
 const double PI = 3.14159265358979;
-const double INF = 1e15;
+
+const ll INF = 1e9;
 
 /*---------------------------------------------------------------------------*/ 
 bool revsort(ll a, ll b) { return (a > b); }
@@ -54,57 +55,33 @@ int modsub(int a, int b, int m) { a %= m; b %= m; return (a - b + m) % m; }
 int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
 int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
 int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
-ll zero(int n) {
-    int count = 0;
-    while (n % 10 == 0 && n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
-int countDigits(long long n) {
-    int count = 0;
-    while (n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
 /*---------------------------------------------------------------------------*/ 
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
+ll ans=LONG_MAX;
+void solve2(ll n, ll i, vector<ll> &s, ll sum, ll count) {
+    if (sum > n) return;
+    ans = min(ans, count + __builtin_popcountll(n - sum));
+    if (i >= s.size() || count >= ans) return; 
+    solve2(n, i + 1, s, sum + s[i], count + 1);
+    solve2(n, i + 1, s, sum, count);
+}
 void solve() {
-    int n,m;
-    cin>>n>>m;
-    vl a(n);
-    vl ze;
-    loop(i,0,n){
-        cin>>a[i];
+    ll n;
+    cin>>n;
+    ans=__builtin_popcountll(n);
+    ll i=2;
+    vector<ll>s;
+    ll x=1;
+    ll in=2;
+    while(x<=1e12)
+    {
+        s.pb(x);
+        x*=in;
+        in++;
     }
-    loop(i,0,n){
-        ll z=zero(a[i]);
-        if(a[i]>0){
-            ze.push_back(z);
-        }
-    }
-    sort(all(ze));
-    ll ans=0;
-    for(int i=0;i<n;i++){
-        ans+=countDigits(a[i]);
-    }
-    for(ll i=n-1;i>=0;i-=2){
-        ans-=ze[i];
-    }
-    if(ans>m){
-        cout<<"Sasha"<<endl;
-    }
-    else{
-        cout<<"Anna"<<endl;
-    }
-
-
+    solve2(n,0,s,0,0);
+    cout<<ans<<endl;
 }
 
 int main() {

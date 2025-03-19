@@ -54,58 +54,37 @@ int modsub(int a, int b, int m) { a %= m; b %= m; return (a - b + m) % m; }
 int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
 int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
 int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
-ll zero(int n) {
-    int count = 0;
-    while (n % 10 == 0 && n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
-int countDigits(long long n) {
-    int count = 0;
-    while (n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
 /*---------------------------------------------------------------------------*/ 
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
 void solve() {
-    int n,m;
-    cin>>n>>m;
+    ll n,k;
+    cin>>n>>k;
     vl a(n);
-    vl ze;
     loop(i,0,n){
         cin>>a[i];
     }
-    loop(i,0,n){
-        ll z=zero(a[i]);
-        if(a[i]>0){
-            ze.push_back(z);
+    map<ll,ll>mpp;
+    for(int i=0;i<n;i++){
+        if(a[i]%k==0) continue;
+        mpp[k-(a[i]%k)]++;
+    }
+    if(mpp.empty()) {
+        cout<<0<<nl; 
+        return ;
+    }
+    ll m=0;
+    ll j=0;
+    for(auto i:mpp){
+        if(i.second>=m){
+            m=i.second;
+            j=i.first;
         }
     }
-    sort(all(ze));
-    ll ans=0;
-    for(int i=0;i<n;i++){
-        ans+=countDigits(a[i]);
-    }
-    for(ll i=n-1;i>=0;i-=2){
-        ans-=ze[i];
-    }
-    if(ans>m){
-        cout<<"Sasha"<<endl;
-    }
-    else{
-        cout<<"Anna"<<endl;
-    }
-
-
+    cout<<k*(m-1)+j+1<<endl;
 }
+
+
 
 int main() {
     ios_base::sync_with_stdio(false);

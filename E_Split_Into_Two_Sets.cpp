@@ -54,58 +54,60 @@ int modsub(int a, int b, int m) { a %= m; b %= m; return (a - b + m) % m; }
 int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
 int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
 int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
-ll zero(int n) {
-    int count = 0;
-    while (n % 10 == 0 && n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
-int countDigits(long long n) {
-    int count = 0;
-    while (n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
 /*---------------------------------------------------------------------------*/ 
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define vl vector<ll>
+
 void solve() {
-    int n,m;
-    cin>>n>>m;
-    vl a(n);
-    vl ze;
-    loop(i,0,n){
-        cin>>a[i];
-    }
-    loop(i,0,n){
-        ll z=zero(a[i]);
-        if(a[i]>0){
-            ze.push_back(z);
+    ll n;
+    cin >> n;
+    
+    vector<vector<ll>> adj(n + 1);
+    bool ans = true;
+    
+    for (ll i = 0; i < n; i++) {
+        ll a, b;
+        cin >> a >> b;
+        adj[a].pb(b);
+        adj[b].pb(a);
+        if(a==b || adj[a].size()>2 || adj[b].size()>2){
+            ans=false;
         }
     }
-    sort(all(ze));
-    ll ans=0;
-    for(int i=0;i<n;i++){
-        ans+=countDigits(a[i]);
-    }
-    for(ll i=n-1;i>=0;i-=2){
-        ans-=ze[i];
-    }
-    if(ans>m){
-        cout<<"Sasha"<<endl;
-    }
-    else{
-        cout<<"Anna"<<endl;
+    vl vis(n + 1, -1);
+
+    for (ll i = 1; i <= n; i++) {
+        if (vis[i] == -1) {
+            vis[i] = 0;
+            stack<ll> st;
+            st.push(i);
+
+            while (!st.empty()) {
+                ll parent = st.top();
+                st.pop();
+
+                for (auto j : adj[parent]) {
+                    if (vis[j] != -1) {
+                        if (vis[j] == vis[parent] && j!=parent) {
+                            cout<<"NO"<<endl;
+                            return;
+                        }
+                    } else {
+                        vis[j] = 1 - vis[parent];
+                        st.push(j);
+                    }
+                }
+            }
+        }
     }
 
-
+    cout << (ans ? "YES" : "NO") << endl;
 }
+
 
 int main() {
     ios_base::sync_with_stdio(false);

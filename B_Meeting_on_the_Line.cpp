@@ -54,58 +54,65 @@ int modsub(int a, int b, int m) { a %= m; b %= m; return (a - b + m) % m; }
 int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
 int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
 int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
-ll zero(int n) {
-    int count = 0;
-    while (n % 10 == 0 && n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
-int countDigits(long long n) {
-    int count = 0;
-    while (n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
 /*---------------------------------------------------------------------------*/ 
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define vl vector<ll>
+
 void solve() {
-    int n,m;
-    cin>>n>>m;
-    vl a(n);
-    vl ze;
-    loop(i,0,n){
-        cin>>a[i];
-    }
-    loop(i,0,n){
-        ll z=zero(a[i]);
-        if(a[i]>0){
-            ze.push_back(z);
+    int n;
+    cin >> n;
+    vl x(n), t(n);
+    
+    for (int i = 0; i < n; i++) cin >> x[i];
+    for (int i = 0; i < n; i++) cin >> t[i];
+
+    ll start = 0, end = 2e8, ansl = -1,ansr=-1;
+    bool f=false;
+
+    while (start <= end) {
+        ll mid = start + (end - start) / 2;
+        vector<pair<ll, ll>> v;
+        bool valid = true;
+
+        for (int i = 0; i < n; i++) {
+            if (mid >= t[i]) {
+                v.push_back({x[i] - mid + t[i], x[i] + mid - t[i]});
+            } else {
+                valid = false;
+                break;
+            }
+        }
+        if (!valid) {
+            start = mid + 1;
+            continue;
+        }
+
+        ll left = LLONG_MIN, right = LLONG_MAX;
+        for (const auto& p : v) {
+            left = max(left, p.first);
+            right = min(right, p.second);
+        }
+
+        if (left <= right) {
+            ansl = left;
+            ansr=right;
+            end = mid - 1;
+        } else {
+            start = mid + 1;
         }
     }
-    sort(all(ze));
-    ll ans=0;
-    for(int i=0;i<n;i++){
-        ans+=countDigits(a[i]);
+    cout <<(ansl+ansr)/2;
+    if((ansl+ansr)%2!=0){
+        cout<<".5";
     }
-    for(ll i=n-1;i>=0;i-=2){
-        ans-=ze[i];
-    }
-    if(ans>m){
-        cout<<"Sasha"<<endl;
-    }
-    else{
-        cout<<"Anna"<<endl;
-    }
-
-
+    cout<<endl;
+    
 }
+
 
 int main() {
     ios_base::sync_with_stdio(false);

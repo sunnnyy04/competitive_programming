@@ -54,56 +54,49 @@ int modsub(int a, int b, int m) { a %= m; b %= m; return (a - b + m) % m; }
 int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
 int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
 int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
-ll zero(int n) {
-    int count = 0;
-    while (n % 10 == 0 && n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
-int countDigits(long long n) {
-    int count = 0;
-    while (n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
 /*---------------------------------------------------------------------------*/ 
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
 void solve() {
-    int n,m;
-    cin>>n>>m;
+    int n,k;
+    cin>>n>>k;
+    string s;
+    cin>>s;
     vl a(n);
-    vl ze;
-    loop(i,0,n){
+    ll ma=0;
+    ll ans;
+    for(int i=0;i<n;i++){
         cin>>a[i];
-    }
-    loop(i,0,n){
-        ll z=zero(a[i]);
-        if(a[i]>0){
-            ze.push_back(z);
+        if(s[i]=='B'){
+            ma=max(ma,a[i]);
         }
     }
-    sort(all(ze));
-    ll ans=0;
-    for(int i=0;i<n;i++){
-        ans+=countDigits(a[i]);
-    }
-    for(ll i=n-1;i>=0;i-=2){
-        ans-=ze[i];
-    }
-    if(ans>m){
-        cout<<"Sasha"<<endl;
-    }
-    else{
-        cout<<"Anna"<<endl;
-    }
+    ll start=0,end=ma;
+    while(start<=end){
+        ll mid=(start+end)/2;
+        int x=k;
+        bool f=false;
+        for(int i=0;i<n;i++){
+            if(f==false && s[i]=='B' && a[i]>mid){
+                f=true;
+                x--;
+            }
+            else if(s[i]=='R' && a[i]>mid && f==true){
+                f=false;
+            }
+        }
+        if(x<0){
 
+            start=mid+1;
+        }
+        else{
+            end=mid-1;
+            ans=mid;
+        }
+
+    }
+    cout<<ans<<endl;
+    
 
 }
 

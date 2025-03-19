@@ -54,57 +54,76 @@ int modsub(int a, int b, int m) { a %= m; b %= m; return (a - b + m) % m; }
 int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
 int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
 int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
-ll zero(int n) {
-    int count = 0;
-    while (n % 10 == 0 && n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
-int countDigits(long long n) {
-    int count = 0;
-    while (n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
 /*---------------------------------------------------------------------------*/ 
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
 void solve() {
-    int n,m;
-    cin>>n>>m;
+    ll n;
+    cin>>n;
     vl a(n);
-    vl ze;
     loop(i,0,n){
         cin>>a[i];
     }
-    loop(i,0,n){
-        ll z=zero(a[i]);
-        if(a[i]>0){
-            ze.push_back(z);
+    sort(all(a));
+    if(a[0]==a[n-1]){
+        cout<<"Yes"<<endl;
+        return;
+    }
+    if(a[0]%10==0){
+        cout<<"No"<<endl;
+        return;
+    }
+    if(a[0]%10==5){
+        for(int i=0;i<n;i++){
+            if(a[i]==a[n-1] || a[i]%5==0 && a[i]+5==a[n-1]){
+
+            }
+            else{
+                cout<<"No"<<endl;
+                return;
+            }
+
+        }
+        cout<<"Yes"<<endl;
+        return;
+
+    }
+
+    for(int i=1;i<n;i++){
+        if(a[i]%5==0 || a[i]%10==0) {
+            cout<<"No"<<endl;
+            return;
+        }
+        else if(a[i-1]%10==1 || a[i-1]%10==2|| a[i-1]%10==4 || a[i-1]%10==8){
+            if(a[i]%10==1 || a[i]%10==2|| a[i]%10==4 || a[i]%10==8){
+                if(((a[i]/10)-a[i-1]/10)%2!=0){
+                    cout<<"No"<<endl;
+                    return;
+                }
+            }
+            else{
+                if(((a[i]/10)-a[i-1]/10)%2==0){
+                    cout<<"No"<<endl;
+                    return;
+                }
+            }
+        }
+        else{
+            if(a[i]%10==1 || a[i]%10==2|| a[i]%10==4 || a[i]%10==8){
+                if(((a[i]/10)-a[i-1]/10)%2==0){
+                    cout<<"No"<<endl;
+                    return;
+                }
+            }
+            else{
+                if(((a[i]/10)-a[i-1]/10)%2!=0){
+                    cout<<"No"<<endl;
+                    return;
+                }
+            }
         }
     }
-    sort(all(ze));
-    ll ans=0;
-    for(int i=0;i<n;i++){
-        ans+=countDigits(a[i]);
-    }
-    for(ll i=n-1;i>=0;i-=2){
-        ans-=ze[i];
-    }
-    if(ans>m){
-        cout<<"Sasha"<<endl;
-    }
-    else{
-        cout<<"Anna"<<endl;
-    }
-
-
+    cout<<"Yes"<<endl;
 }
 
 int main() {

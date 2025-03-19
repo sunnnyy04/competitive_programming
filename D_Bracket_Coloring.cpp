@@ -54,57 +54,93 @@ int modsub(int a, int b, int m) { a %= m; b %= m; return (a - b + m) % m; }
 int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
 int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
 int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
-ll zero(int n) {
-    int count = 0;
-    while (n % 10 == 0 && n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
-int countDigits(long long n) {
-    int count = 0;
-    while (n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
 /*---------------------------------------------------------------------------*/ 
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
 void solve() {
-    int n,m;
-    cin>>n>>m;
-    vl a(n);
-    vl ze;
-    loop(i,0,n){
-        cin>>a[i];
-    }
-    loop(i,0,n){
-        ll z=zero(a[i]);
-        if(a[i]>0){
-            ze.push_back(z);
+    int n;
+    cin>>n;
+    string s;
+    cin>>s;
+    ll o=0;
+    ll c=0;
+    for(int i=0;i<n;i++){
+        if(s[i]==')'){
+            c++;
+        }
+        else{
+            o++;
         }
     }
-    sort(all(ze));
-    ll ans=0;
-    for(int i=0;i<n;i++){
-        ans+=countDigits(a[i]);
-    }
-    for(ll i=n-1;i>=0;i-=2){
-        ans-=ze[i];
-    }
-    if(ans>m){
-        cout<<"Sasha"<<endl;
+    if(o!=c){
+        cout<<-1<<endl;
+        return;
     }
     else{
-        cout<<"Anna"<<endl;
+        o=0;
+        c=0;
+        vector<ll>ans(n);
+        for(int i=0;i<n;i++){
+            if(s[i]=='('){
+                if(c==0){
+                    o++;
+                    ans[i]=1;
+                }
+                else{
+                    c--;
+                }
+            }
+            else{
+                if(o>0){
+                    ans[i]=1;
+                    o--;
+                }
+                else{
+                    c++;
+                }
+                
+            }
+        }
+        o=0;
+        c=0;
+        for(int i=n-1;i>=0;i--){
+            if(s[i]=='('){
+                if(c==0){
+                    o++;
+                    ans[i]=2;
+                }
+                else{
+                    c--;
+                }
+                
+            }
+            else{
+                if(o>0){
+                    ans[i]=2;
+                    o--;
+                }
+                else{
+                    c++;
+                }
+            }
+        }
+        vl b=ans;
+        sort(all(b));
+        if(b[0]==b[n-1]){
+                cout<<1<<endl;
+
+            for(auto i:ans){
+                cout<<1<<" ";
+            }    
+        }
+        else{
+            cout<<2<<endl;
+            for(auto i:ans){
+                cout<<i<<" ";
+            }
+        }
+        cout<<endl;
     }
-
-
 }
 
 int main() {

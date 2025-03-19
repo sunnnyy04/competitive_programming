@@ -54,55 +54,56 @@ int modsub(int a, int b, int m) { a %= m; b %= m; return (a - b + m) % m; }
 int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
 int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
 int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
-ll zero(int n) {
-    int count = 0;
-    while (n % 10 == 0 && n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
-int countDigits(long long n) {
-    int count = 0;
-    while (n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
 /*---------------------------------------------------------------------------*/ 
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
-void solve() {
-    int n,m;
-    cin>>n>>m;
+// map<string,ll>mpp;
+// ll n;
+// vl a;
+// ll solve2(int i,int k,int z,int p){
+//     if(k<=0 || (i>=n-1 && z<=0)){
+//         return 0;
+//     }
+//     string s = to_string(i) + "_" + to_string(k) + "_" + to_string(z) + "_" + to_string(p);
+
+//     if(mpp.find(s)!=mpp.end()) return mpp[s];
+//     if (z <= 0 || i == 0 || p == 1) {
+//         ll ans = a[i + 1] + solve2(i + 1, k - 1, z, 0);
+//         return mpp[s] = ans;
+//     } 
+//     else {
+//         ll ans = 0;
+//         if (i < n - 1) {
+//             ans = max(ans, a[i + 1] + solve2(i + 1, k - 1, z, 0));
+//         }
+//         if (z > 0 && i > 0 && p != 1) {
+//             ans = max(ans, a[i - 1] + solve2(i - 1, k - 1, z - 1, 1));
+//         }
+
+//         return mpp[s] = ans;
+//     }
+// }
+void solve( ) {
+    ll n,k,z;
+    cin>>n>>k>>z;
     vl a(n);
-    vl ze;
-    loop(i,0,n){
-        cin>>a[i];
+    loop(i,0,n) cin>>a[i];
+    vl prefix(n);
+    prefix[0]=a[0];
+    loop(i,1,n){
+        prefix[i]=a[i]+prefix[i-1];
     }
-    loop(i,0,n){
-        ll z=zero(a[i]);
-        if(a[i]>0){
-            ze.push_back(z);
+    ll ans=prefix[k];
+    for(int i=1;i<=k;i++){
+        for(int j=1;j<=z;j++){
+            int r=k-(2*j);
+            if(r<i-1){
+                continue;
+            }
+            ans=max(ans,prefix[r]+(j*(a[i]+a[i-1])));
         }
     }
-    sort(all(ze));
-    ll ans=0;
-    for(int i=0;i<n;i++){
-        ans+=countDigits(a[i]);
-    }
-    for(ll i=n-1;i>=0;i-=2){
-        ans-=ze[i];
-    }
-    if(ans>m){
-        cout<<"Sasha"<<endl;
-    }
-    else{
-        cout<<"Anna"<<endl;
-    }
+    cout<<ans<<endl;
 
 
 }

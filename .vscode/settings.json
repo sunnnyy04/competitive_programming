@@ -7,6 +7,13 @@
         "string": "cpp",
         "ostream": "cpp",
         "map": "cpp",
-        "queue": "cpp"
+        "queue": "cpp",
+        "ios": "cpp",
+        "complex": "cpp",
+        "valarray": "cpp",
+        "__locale": "cpp",
+        "print": "cpp",
+        "iomanip": "cpp",
+        "stack": "cpp"
     }
 }

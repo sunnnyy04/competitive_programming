@@ -54,58 +54,47 @@ int modsub(int a, int b, int m) { a %= m; b %= m; return (a - b + m) % m; }
 int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
 int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
 int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
-ll zero(int n) {
-    int count = 0;
-    while (n % 10 == 0 && n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
-int countDigits(long long n) {
-    int count = 0;
-    while (n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
 /*---------------------------------------------------------------------------*/ 
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
 void solve() {
-    int n,m;
-    cin>>n>>m;
-    vl a(n);
-    vl ze;
-    loop(i,0,n){
-        cin>>a[i];
-    }
-    loop(i,0,n){
-        ll z=zero(a[i]);
-        if(a[i]>0){
-            ze.push_back(z);
+    ll n, m;
+    cin >> n >> m;
+    
+    vl a(m);  
+    ll z=0;
+    loop(i, 0, m) {
+
+        cin >> a[i];
+        if(a[i]==n){
+            a[i]--;
         }
     }
-    sort(all(ze));
-    ll ans=0;
-    for(int i=0;i<n;i++){
-        ans+=countDigits(a[i]);
+
+    ll ans = 0;
+    sort(all(a));  
+
+    vl b(m);
+    vl prefix(m);
+    loop(i, 0, m) {
+        b[i] = n- a[i];
     }
-    for(ll i=n-1;i>=0;i-=2){
-        ans-=ze[i];
+    loop(i,0,m) {
+        prefix[i] = (i == 0) ? b[i] : b[i] + prefix[i - 1];
+
     }
-    if(ans>m){
-        cout<<"Sasha"<<endl;
-    }
-    else{
-        cout<<"Anna"<<endl;
+    for (int i = m - 1; i > 0; i--) {
+        int j = lower_bound(all(a), b[i]) - a.begin();
+
+        if (j >= i) continue;
+
+        ll x = ((i - j)*(-(b[i]-n)) )- (prefix[i-1] - (j > 0 ? prefix[j - 1] : 0)) + (i - j);
+        ans += x * 2;
     }
 
-
+    cout<<ans<<endl;
 }
+
 
 int main() {
     ios_base::sync_with_stdio(false);
@@ -117,4 +106,4 @@ int main() {
         solve();
     }
     return 0;
-}
+} 

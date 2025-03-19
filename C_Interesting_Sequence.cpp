@@ -54,57 +54,66 @@ int modsub(int a, int b, int m) { a %= m; b %= m; return (a - b + m) % m; }
 int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
 int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
 int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
-ll zero(int n) {
-    int count = 0;
-    while (n % 10 == 0 && n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
-int countDigits(long long n) {
-    int count = 0;
-    while (n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
 /*---------------------------------------------------------------------------*/ 
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
+
 void solve() {
-    int n,m;
-    cin>>n>>m;
-    vl a(n);
-    vl ze;
-    loop(i,0,n){
-        cin>>a[i];
+    ll n, x;
+    cin >> n >> x;
+    
+    if (x > n) {
+        cout << -1 << nl;
+        return;
     }
-    loop(i,0,n){
-        ll z=zero(a[i]);
-        if(a[i]>0){
-            ze.push_back(z);
+    if (x == n) {
+        cout << x << nl;
+        return;
+    }
+
+    ll i = 0, j = -1;
+    while (n >= (1ll << i)) {
+        if (((n & (1ll << i)) == 0) && ((x & (1ll << i)) == 1)) {
+            cout << -1 << nl;
+            return;
         }
+        if ((n & (1ll << i)) != (x & (1ll << i))) {
+            j = i;
+        }
+        i++;
     }
-    sort(all(ze));
-    ll ans=0;
-    for(int i=0;i<n;i++){
-        ans+=countDigits(a[i]);
-    }
-    for(ll i=n-1;i>=0;i-=2){
-        ans-=ze[i];
-    }
-    if(ans>m){
-        cout<<"Sasha"<<endl;
-    }
-    else{
-        cout<<"Anna"<<endl;
+    
+    if (j == -1) {  
+        cout << -1<< nl;
+        return;
     }
 
+    j++; 
+    ll ans;
+    while (j <= i) {
+        if (j == i) {
+            ans=(1ll << j);
+            break;
+        }
+        else {
+            if ((x & (1ll << j)) == 0) {
+                ans=(x | (1ll << j));
+                break;
+            }
+        }
+        j++;
+    }
 
+    ll z=0;
+    while(z<j){
+        if ((x & (1ll << z)) != 0){
+            cout<<-1<<endl;
+            return ;
+        }
+        z++;
+    }
+    cout<<ans<<endl;
+    
 }
 
 int main() {

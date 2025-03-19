@@ -54,56 +54,40 @@ int modsub(int a, int b, int m) { a %= m; b %= m; return (a - b + m) % m; }
 int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
 int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
 int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
-ll zero(int n) {
-    int count = 0;
-    while (n % 10 == 0 && n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
-int countDigits(long long n) {
-    int count = 0;
-    while (n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
 /*---------------------------------------------------------------------------*/ 
-
+vvl adj;
+vector<pair<int,int>>a;
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
-void solve() {
-    int n,m;
-    cin>>n>>m;
-    vl a(n);
-    vl ze;
-    loop(i,0,n){
-        cin>>a[i];
-    }
-    loop(i,0,n){
-        ll z=zero(a[i]);
-        if(a[i]>0){
-            ze.push_back(z);
+vector<vector<ll>>dp;
+void solve2(ll i,ll j){
+    dp[i][0]=dp[i][1]=0;
+    for(auto &x:adj[i]){
+        if(x!=j){
+            solve2(x,i);
+            dp[i][0]+=max(abs(a[i].first-a[x].first)+dp[x][0],dp[x][1]+abs(a[i].first-a[x].second));
+            dp[i][1]+=max(abs(a[i].second-a[x].first)+dp[x][0],dp[x][1]+abs(a[i].second-a[x].second));
         }
     }
-    sort(all(ze));
-    ll ans=0;
-    for(int i=0;i<n;i++){
-        ans+=countDigits(a[i]);
-    }
-    for(ll i=n-1;i>=0;i-=2){
-        ans-=ze[i];
-    }
-    if(ans>m){
-        cout<<"Sasha"<<endl;
-    }
-    else{
-        cout<<"Anna"<<endl;
-    }
 
+}
+void solve() {
+    int n;
+    cin>>n;
+    adj.assign(n+1,vector<ll>());
+    a.resize(n+1);
+    loop(i,1,n+1){
+        cin>>a[i].first;
+        cin>>a[i].second;
+    }
+    loop(i,0,n-1){
+        int x,y;
+        cin>>x>>y;
+        adj[x].push_back(y);
+        adj[y].push_back(x);
+    }
+    dp.assign(n+1,vector<ll>(2,0));
+    solve2(1,-1);
+    cout<<max(dp[1][0],dp[1][1])<<endl;
 
 }
 

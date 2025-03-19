@@ -54,62 +54,51 @@ int modsub(int a, int b, int m) { a %= m; b %= m; return (a - b + m) % m; }
 int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
 int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
 int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
-ll zero(int n) {
-    int count = 0;
-    while (n % 10 == 0 && n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
-int countDigits(long long n) {
-    int count = 0;
-    while (n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
 /*---------------------------------------------------------------------------*/ 
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define vl vector<ll>
+#define vvl vector<vector<ll>>
+#define loop(i,a,b) for(ll i=a;i<b;i++)
+vl d(1001,INT_MAX);
+
+
 void solve() {
-    int n,m;
-    cin>>n>>m;
-    vl a(n);
-    vl ze;
-    loop(i,0,n){
-        cin>>a[i];
-    }
-    loop(i,0,n){
-        ll z=zero(a[i]);
-        if(a[i]>0){
-            ze.push_back(z);
+    ll n, k;
+    cin >> n >> k;
+    vl b(n), c(n);
+
+    loop(i, 0, n){ cin >> b[i];}
+    loop(i, 0, n) cin >> c[i];
+    k = min(k, 12 * n);
+    vvl t(k + 1, vl(n+1, 0)); 
+
+    for (ll i = 0; i <= k; i++) {
+        for (ll j = 1; j <= n; j++) {
+            t[i][j] = t[i][j-1]; 
+            if (i - d[b[j-1]] >= 0) {
+                t[i][j] = max(t[i][j], c[j-1] + t[i - d[b[j-1]]][j-1]);
+            }
         }
     }
-    sort(all(ze));
-    ll ans=0;
-    for(int i=0;i<n;i++){
-        ans+=countDigits(a[i]);
-    }
-    for(ll i=n-1;i>=0;i-=2){
-        ans-=ze[i];
-    }
-    if(ans>m){
-        cout<<"Sasha"<<endl;
-    }
-    else{
-        cout<<"Anna"<<endl;
-    }
-
-
+    cout << t[k][n] << endl;
 }
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
+    d[1]=0;
+    for(int i=1;i<1001;i++){
+        for(int j=1;j<=i;j++){
+            ll x=i+(i/j);
+            if(x<1001){
+                d[x]=min(d[x],d[i]+1);
+            }
+        }
+    }
 
     int tc;
     cin >> tc;

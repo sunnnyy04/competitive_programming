@@ -54,56 +54,29 @@ int modsub(int a, int b, int m) { a %= m; b %= m; return (a - b + m) % m; }
 int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
 int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
 int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
-ll zero(int n) {
-    int count = 0;
-    while (n % 10 == 0 && n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
-int countDigits(long long n) {
-    int count = 0;
-    while (n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
 /*---------------------------------------------------------------------------*/ 
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
 void solve() {
-    int n,m;
-    cin>>n>>m;
-    vl a(n);
-    vl ze;
-    loop(i,0,n){
-        cin>>a[i];
-    }
-    loop(i,0,n){
-        ll z=zero(a[i]);
-        if(a[i]>0){
-            ze.push_back(z);
-        }
-    }
-    sort(all(ze));
-    ll ans=0;
+    int n;
+    cin>>n;
+    multiset<int> ms;
     for(int i=0;i<n;i++){
-        ans+=countDigits(a[i]);
+        int x;
+        cin>>x;
+        ms.insert(x);
     }
-    for(ll i=n-1;i>=0;i-=2){
-        ans-=ze[i];
+    while (ms.size() > 1) {
+        auto it = ms.begin();  
+        int x = *it;
+        it++;                    
+        int y = *it;
+        ms.erase(ms.begin());
+        ms.erase(ms.begin());
+        ms.insert(x+y-1); 
     }
-    if(ans>m){
-        cout<<"Sasha"<<endl;
-    }
-    else{
-        cout<<"Anna"<<endl;
-    }
-
+    auto it=ms.begin();
+    cout<<*it<<endl;
 
 }
 

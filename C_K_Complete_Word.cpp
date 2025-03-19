@@ -54,57 +54,46 @@ int modsub(int a, int b, int m) { a %= m; b %= m; return (a - b + m) % m; }
 int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
 int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
 int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
-ll zero(int n) {
-    int count = 0;
-    while (n % 10 == 0 && n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
-int countDigits(long long n) {
-    int count = 0;
-    while (n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
 /*---------------------------------------------------------------------------*/ 
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
-void solve() {
-    int n,m;
-    cin>>n>>m;
-    vl a(n);
-    vl ze;
-    loop(i,0,n){
-        cin>>a[i];
+ll ans;
+int n,k;
+void solve2(int i,map<char,ll>&freq,string &s,vector<bool>&vis){
+    if(vis[i]==true){
+        return ;
     }
-    loop(i,0,n){
-        ll z=zero(a[i]);
-        if(a[i]>0){
-            ze.push_back(z);
+    vis[i]=true;
+    freq[s[i]]++;
+    if(i+k<n){
+        solve2(i+k,freq,s,vis);
+    }
+    if(i-k>=0){
+        solve2(i-k,freq,s,vis);
+    }
+    solve2(n-i-1,freq,s,vis);
+}
+void solve() {
+    cin>>n>>k;
+    string s;
+    cin>>s;
+    vector<bool>vis(n,false);
+    ans=0;
+    for(int i=0;i<n;i++){
+        map<char,ll>freq;
+        if(vis[i]==false){
+            solve2(i,freq,s,vis);
+            int temp=0;
+            ll ma=0;
+            for(auto &i:freq){
+                ma=max(ma,i.second);
+                temp+=i.second;
+            }
+            ans+=temp;
+            ans-=ma;
         }
     }
-    sort(all(ze));
-    ll ans=0;
-    for(int i=0;i<n;i++){
-        ans+=countDigits(a[i]);
-    }
-    for(ll i=n-1;i>=0;i-=2){
-        ans-=ze[i];
-    }
-    if(ans>m){
-        cout<<"Sasha"<<endl;
-    }
-    else{
-        cout<<"Anna"<<endl;
-    }
-
-
+    cout<<ans<<endl;
 }
 
 int main() {

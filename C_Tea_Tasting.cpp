@@ -54,58 +54,58 @@ int modsub(int a, int b, int m) { a %= m; b %= m; return (a - b + m) % m; }
 int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
 int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
 int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
-ll zero(int n) {
-    int count = 0;
-    while (n % 10 == 0 && n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
-int countDigits(long long n) {
-    int count = 0;
-    while (n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
 /*---------------------------------------------------------------------------*/ 
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
 void solve() {
-    int n,m;
-    cin>>n>>m;
+    int n;
+    cin >> n;
     vl a(n);
-    vl ze;
-    loop(i,0,n){
-        cin>>a[i];
+    loop(i, 0, n) cin >> a[i];
+    vl b(n);
+    loop(i, 0, n) cin >> b[i];
+
+    vl bsum(n);
+    bsum = b;
+    for (int i = 1; i < n; i++) {
+        bsum[i] += bsum[i - 1];
     }
-    loop(i,0,n){
-        ll z=zero(a[i]);
-        if(a[i]>0){
-            ze.push_back(z);
+
+    vl freq(n + 1, 0);
+    vl buffer(n + 1, 0);
+
+    for (int i = 0; i < n; i++) {
+        int x = upper_bound(all(bsum), a[i] + ((i > 0) ? bsum[i - 1] : 0)) - bsum.begin();
+        if (x >= n) continue;
+        if(x==i){
+            freq[x]++;
+            buffer[x]+=a[i];
         }
-    }
-    sort(all(ze));
-    ll ans=0;
-    for(int i=0;i<n;i++){
-        ans+=countDigits(a[i]);
-    }
-    for(ll i=n-1;i>=0;i-=2){
-        ans-=ze[i];
-    }
-    if(ans>m){
-        cout<<"Sasha"<<endl;
-    }
-    else{
-        cout<<"Anna"<<endl;
+        else{
+            freq[x]++;
+            buffer[x] += (a[i] - bsum[x - 1]) + ((i > 0) ? bsum[i - 1] : 0);
+        } 
+        // cout<<buffer[x]<<" ";
     }
 
+    vl ans(n);
+    for (int i = 0; i < n; i++) {
+        freq[i] += (i > 0) ? freq[i - 1] : 0;
+    }
 
+    for (int i = 0; i < n; i++) {
+        ans[i] = (i + 1) * b[i];
+        ans[i] -= (freq[i] * b[i]);
+        ans[i] += buffer[i];
+    }
+
+    for (int i = 0; i < n; i++) {
+        cout << ans[i] << " ";
+    }
+    cout << endl;
 }
+
+
 
 int main() {
     ios_base::sync_with_stdio(false);

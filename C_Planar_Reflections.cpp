@@ -38,7 +38,7 @@ typedef long double ld;
 #define sz(x)               ((int)(x).size())
 
 //--------------------------------------------------------------//
-const long long MOD = 1000000007;
+const long long MOD = 1e9 +7;
 const int MAX_N = 500001;
 const double PI = 3.14159265358979;
 const double INF = 1e15;
@@ -54,57 +54,28 @@ int modsub(int a, int b, int m) { a %= m; b %= m; return (a - b + m) % m; }
 int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
 int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
 int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
-ll zero(int n) {
-    int count = 0;
-    while (n % 10 == 0 && n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
-int countDigits(long long n) {
-    int count = 0;
-    while (n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
 /*---------------------------------------------------------------------------*/ 
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
+vvl dp;
+ll n,k ;
+
+ll solve2(ll tn, ll tk) {
+    if (tn == 0 || tk <= 1) return 1;
+
+    if (tk == 0) return 0;  
+    if (tn == 0) return 1;
+    
+    if (dp[tn][tk] != 0) return dp[tn][tk];
+
+    return dp[tn][tk] = (solve2(tn - 1, tk) +solve2(n-tn, tk - 1) )% MOD;
+}
+
 void solve() {
-    int n,m;
-    cin>>n>>m;
-    vl a(n);
-    vl ze;
-    loop(i,0,n){
-        cin>>a[i];
-    }
-    loop(i,0,n){
-        ll z=zero(a[i]);
-        if(a[i]>0){
-            ze.push_back(z);
-        }
-    }
-    sort(all(ze));
-    ll ans=0;
-    for(int i=0;i<n;i++){
-        ans+=countDigits(a[i]);
-    }
-    for(ll i=n-1;i>=0;i-=2){
-        ans-=ze[i];
-    }
-    if(ans>m){
-        cout<<"Sasha"<<endl;
-    }
-    else{
-        cout<<"Anna"<<endl;
-    }
-
-
+    cin >> n >> k;
+    dp.assign(n + 10, vector<ll>(k + 10, 0));
+  
+    cout << solve2(n, k) << endl;
 }
 
 int main() {

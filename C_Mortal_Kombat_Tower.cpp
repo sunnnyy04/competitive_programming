@@ -54,57 +54,40 @@ int modsub(int a, int b, int m) { a %= m; b %= m; return (a - b + m) % m; }
 int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
 int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
 int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
-ll zero(int n) {
-    int count = 0;
-    while (n % 10 == 0 && n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
-int countDigits(long long n) {
-    int count = 0;
-    while (n != 0) {
-        count++;
-        n /= 10;
-    }
-    return count;
-}
-
 /*---------------------------------------------------------------------------*/ 
 
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
 void solve() {
-    int n,m;
-    cin>>n>>m;
+    int n;
+    cin>>n;
     vl a(n);
-    vl ze;
-    loop(i,0,n){
-        cin>>a[i];
-    }
-    loop(i,0,n){
-        ll z=zero(a[i]);
-        if(a[i]>0){
-            ze.push_back(z);
-        }
-    }
-    sort(all(ze));
+    loop(i,0,n) cin>>a[i];
+    bool mt=false;
+    ll i=1;
     ll ans=0;
-    for(int i=0;i<n;i++){
-        ans+=countDigits(a[i]);
+    ll temp=0;
+    if(a[0]==1){
+        ans++;
     }
-    for(ll i=n-1;i>=0;i-=2){
-        ans-=ze[i];
+    map<ll,ll>mpp;
+    while(i<n){
+        if(a[i]==1){
+            temp++;
+        }
+        else{
+            mpp[temp]++;
+            temp=0;
+        }
+        i++;
     }
-    if(ans>m){
-        cout<<"Sasha"<<endl;
+    mpp[temp]++;
+    for(auto i:mpp){
+        // cout<<i.first<<" ";
+        ll res=i.first/3;
+        res*=i.second;
+        ans+=res;
     }
-    else{
-        cout<<"Anna"<<endl;
-    }
-
-
+    cout<<ans<<endl;
 }
 
 int main() {
