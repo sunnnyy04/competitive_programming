@@ -39,14 +39,13 @@ typedef long double ld;
 
 //--------------------------------------------------------------//
 const long long MOD = 1000000007;
-const int MAX_N = 1001; // Adjusted to a reasonable size
+const int MAX_N = 1001;
 const double PI = 3.14159265358979;
 const double INF = 1e15;
 
 /*---------------------------------------------------------------------------*/ 
 vector<ll> fact(MAX_N, 1), invFact(MAX_N, 1);
 
-// Function to calculate (a^b) % mod using Binary Exponentiation
 ll power(ll a, ll b, ll mod) {
     ll res = 1;
     while (b > 0) {
@@ -56,8 +55,6 @@ ll power(ll a, ll b, ll mod) {
     }
     return res;
 }
-
-// Precompute factorials and inverse factorials
 void precompute() {
     for (ll i = 2; i < MAX_N; i++) {
         fact[i] = (fact[i - 1] * i) % MOD;
@@ -67,8 +64,6 @@ void precompute() {
         invFact[i] = (invFact[i + 1] * (i + 1)) % MOD;
     }
 }
-
-// Function to calculate nCr % MOD
 ll nCr(ll n, ll r) {
     if (r > n || r < 0) return 0;
     return ((fact[n] * invFact[r]) % MOD * invFact[n - r]) % MOD;
@@ -91,7 +86,7 @@ void solve() {
         }
     }
 
-    mll mpp;  // Changed from map<int, int> to map<ll, ll>
+    mll mpp;
     loop(i, 0, n) {
         mpp[a[i]]++;
     }
@@ -103,7 +98,7 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
-    precompute();  // ✅ Precompute factorials before solving test cases
+    precompute(); 
 
     int tc;
     cin >> tc;

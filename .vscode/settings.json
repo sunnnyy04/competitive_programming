@@ -14,6 +14,11 @@
         "__locale": "cpp",
         "print": "cpp",
         "iomanip": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "iosfwd": "cpp",
+        "regex": "cpp",
+        "span": "cpp",
+        "set": "cpp",
+        "tuple": "cpp"
     }
 }
