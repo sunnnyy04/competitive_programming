@@ -1,0 +1,1 @@
+{"name":"Local: codevita5","url":"/Users/sunnyshukla/personal/codeforces/codevita5.py","tests":[{"id":1761974763728,"input":"6\n\n1 2\n\n1 3\n\n1 5\n\n3 4\n\n4 5\n\n2 4\n\n1 2\n\n1 4\n\n1 5\n\n2 3\n\n3 4\n\n3 5","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/Users/sunnyshukla/personal/codeforces/codevita5.py","group":"local","local":true}

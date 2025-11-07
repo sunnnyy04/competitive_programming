@@ -1,6 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> master
 //--------------------------------------------------------------//
 typedef vector<int> vi;
 typedef vector<vector<int> > vvi;
@@ -19,7 +23,11 @@ typedef pair<int, int> pii;
 typedef pair<long long, long long> pll;
 typedef unsigned long long ull;
 typedef long double ld;
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> master
 #define ll long long
 #define amax(a, b)          a = max(a, b)
 #define amin(a, b)          a = min(a, b)
@@ -36,13 +44,21 @@ typedef long double ld;
 #define loopr(i, a, b)      for (int i = b; i < a; i--)
 #define all(a)              a.begin(), a.end()
 #define sz(x)               ((int)(x).size())
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> master
 //--------------------------------------------------------------//
 const long long MOD = 1000000007;
 const int MAX_N = 500001;
 const double PI = 3.14159265358979;
 const double INF = 1e15;
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> master
 /*---------------------------------------------------------------------------*/ 
 bool revsort(ll a, ll b) { return (a > b); }
 void reverseStr(string &str) { int n = str.length(); for (int i = 0; i < n / 2; i++) { swap(str[i], str[n - i - 1]); } }
@@ -55,7 +71,11 @@ int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
 int expo(int a, int n, int m) { int res = 1; while (n) { if (n & 1) { res = modmul(res, a, m); --n; } else { a = modmul(a, a, m); n >>= 1; } } return res; }
 int expo(int a, int n) { int res = 1; while (n) { if (n & 1) { res = res * a; --n; } else { a = a * a; n >>= 1; } } return res; }
 /*---------------------------------------------------------------------------*/ 
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> master
 // =============== !!! ~ ~ ~ Code Starts Here ~ ~ ~ !!! ===============
 void solve() {
     int n;
@@ -63,6 +83,7 @@ void solve() {
     string s;
     cin>>s;
     vector<int>vis(n+1,0);
+<<<<<<< HEAD
     // if(s[0]=='0'){
     //     ll ans=0;
     //     for(int i=0;i<n;i++){
@@ -73,6 +94,8 @@ void solve() {
     //     cout<<ans<<endl;
     //     return;
     // }
+=======
+>>>>>>> master
     ll ans=0;
     for(int i=0;i<n;i++){
         if(s[i]=='0'){
@@ -93,7 +116,10 @@ void solve() {
                 }
             }
             else{
+<<<<<<< HEAD
                 vis[i+1]=1;
+=======
+>>>>>>> master
                 ll j=(i+1);
                 j+=(i+1);
                 while(j<=n){
@@ -106,6 +132,7 @@ void solve() {
                     }
                     j+=(i+1);
                 }
+<<<<<<< HEAD
 
             }
             
@@ -121,6 +148,20 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
+=======
+ 
+            }
+            
+        }
+    }
+    cout<<ans<<endl;
+}
+ 
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+ 
+>>>>>>> master
     int tc;
     cin >> tc;
     while (tc--) {

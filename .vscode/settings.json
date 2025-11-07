@@ -1,5 +1,6 @@
 {
     "files.associations": {
+<<<<<<< HEAD
         "*.py": "python",
         "iostream": "cpp",
         "vector": "cpp",
@@ -20,5 +21,9 @@
         "span": "cpp",
         "set": "cpp",
         "tuple": "cpp"
+=======
+        "iostream": "cpp",
+        "set": "cpp"
+>>>>>>> master
     }
 }

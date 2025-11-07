@@ -1,0 +1,1 @@
+{"name":"Local: c","url":"/Users/sunnyshukla/personal/codeforces/c.cpp","tests":[{"id":1761970194950,"input":"8\n\nA B C B A C C A\n\n1 4 7","output":""},{"id":1761970213619,"input":"10\n\nC A B B C C B A B C\n\n1 4 10","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/Users/sunnyshukla/personal/codeforces/c.cpp","group":"local","local":true}
